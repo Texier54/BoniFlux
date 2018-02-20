@@ -19,8 +19,6 @@
           <div class="points is-size-4 has-text-weight-semibold">
             <p class="score">Score : {{ score }}  ( +{{ newscore }} ! )</p>
           </div>
-          <p class="is-size-4 has-text-weight-semibold"><i class="marker fas fa-hourglass-half"></i>{{ progress }}s</p>
-          <progress class="progress is-success" :value="progress" :max="tempsMax">{{ progress }}</progress>
         </div>
       </div>
     </section>
