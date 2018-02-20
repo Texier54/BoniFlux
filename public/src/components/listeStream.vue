@@ -13,7 +13,8 @@
       18
     </div>
     <div class="column is-size-5 has-text-centered data">
-      <a class="button is-success">Regarder</a>
+          <router-link class="button is-success" :to="{ name:'diffusion', params : { id : 1 } }">
+          Regarder</router-link>
     </div>
   </div>
 </template>

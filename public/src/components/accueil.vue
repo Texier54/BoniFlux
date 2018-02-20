@@ -13,7 +13,8 @@
           </p>
         </div>
         <div class="has-text-centered is-marginless">
-          <button class="button is-link is-large is-capitalized has-text-weight-bold" @click="lancerPartie"><i class="marker fas fa-circle" style="color: red;"></i>Démarer un Stream</button>
+          <router-link class="button is-link is-large is-capitalized has-text-weight-bold" :to="{ name:'emission', params : {} }">
+          <i class="marker fas fa-circle" style="color: red;"></i>Démarer un Stream</router-link>
         </div>
       </nav>
       <div class="border">
