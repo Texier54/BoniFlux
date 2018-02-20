@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import lancerPartie from '@/components/lancerPartie'
-import partie from '@/components/partie'
+import accueil from '@/components/accueil.vue'
 
 Vue.use(Router)
 
@@ -9,14 +8,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: lancerPartie,
-      name: 'lancerPartie',
+      component: accueil,
+      name: 'accueil',
     },
-    {
-      path: '/partie',
-      component: partie,
-      name: 'partie',
-    },
-    { path: '*', component: lancerPartie}
+    { path: '*', component: accueil}
   ]
 })
