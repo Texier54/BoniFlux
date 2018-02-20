@@ -34,9 +34,9 @@ $app->options('/{routes:.+}', function ($request, $response, $args) {
 });
 
 
-$app->get('/series[/]', function (Request $req, Response $resp, $args) {
-    $c = new geoquizz\api\control\Controller($this);
-    return $c->getSeries($req, $resp, $args);
+$app->get('/streams[/]', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->stream($req, $resp, $args);
     }
 );
 
