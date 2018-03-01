@@ -12,6 +12,10 @@ export default {
 
   },
   mounted() {
+    if(!this.$store.state.member) {
+      this.$router.push({path: '/'});
+    }
+
   }
 }
 </script>

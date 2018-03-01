@@ -33,6 +33,66 @@
       </div>
 
     </section>
+
+    <div v-show="modalCo" class="modal is-active">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Connexion</p>
+        </header>
+        <section class="modal-card-body">
+
+          <label class="label">Pseudo</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Pseudo">
+          </div>
+
+          <label class="label">Mot de passe</label>
+          <div class="control">
+            <input class="input" type="password" placeholder="Mot de passe">
+          </div>
+
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success">Connexion</button>
+          <button class="button" @click="modalCo=false; modalIn= true;">Inscription</button>
+        </footer>
+      </div>
+    </div>
+
+
+    <div v-show="modalIn" class="modal is-active">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Inscription</p>
+        </header>
+        <section class="modal-card-body">
+
+          <label class="label">Pseudo</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Pseudo">
+          </div>
+
+          <label class="label">E-mail</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="E-mail">
+          </div>
+
+          <label class="label">Mot de passe</label>
+          <div class="control">
+            <input class="input" type="password" placeholder="Mot de passe">
+          </div>
+
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success">S'inscrire</button>
+          <button class="button" @click="modalCo=true; modalIn= false;">Connexion</button>
+        </footer>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -47,9 +107,17 @@ export default {
 
   data () {
     return {
-      streams: [1, 2, 3, 4, 5, 6]
+      streams: [1, 2, 3, 4, 5, 6],
+      modalCo: false,
+      modalIn: false,
     }
   },
+  mounted() {
+    if(!this.$store.state.member) {
+      this.modalCo = true;
+    }
+
+  }
 }
 </script>
 
