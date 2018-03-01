@@ -5,11 +5,19 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state : {
-		partie : false,
+		member : false,
+		token : false,
+		listemember : false,
 	},
 	mutations : {
-		setPartie(state,partie) {
-			state.partie = partie;
+		setMember(state,member) {
+			state.member = member;
+		},
+		setListeMember(state,liste) {
+			state.listemember = liste;
+		},
+		setToken(state,token) {
+			state.token = token;
 		},
 		initialiseStore(state) {
 			if(localStorage.getItem('store')) {
@@ -18,8 +26,16 @@ export default new Vuex.Store({
 				);
 			}
 		},
-		getPartie() {
-			return state.partie;
+		getToken() {
+			return state.token;
+		},
+		getMember(state,id) {
+			    var obj = this.state.listemember;
+
+			    for (var prop in obj) {
+			      if(obj[prop]['_id'] == id)
+			        return obj[prop];
+			    }
 		},
 	},
 })

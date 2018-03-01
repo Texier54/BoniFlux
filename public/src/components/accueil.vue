@@ -25,25 +25,13 @@
           <p>(La liste n'est qu'un aperçus)</p>
         </div>
       </div>
-      <div class="columns is-multiline">
-        <div class="column is-size-4 has-text-centered has-text-weight-semibold titre first">
-          Pseudo
-        </div>
-        <div class="column is-size-4 has-text-centered has-text-weight-semibold titre">
-          Lieu
-        </div>
-        <div class="column is-size-4 has-text-centered has-text-weight-semibold titre">
-          Date
-        </div>
-        <div class="column is-size-4 has-text-centered has-text-weight-semibold titre last">
-          Vue(s)
-        </div>
-        <div class="column is-size-4 has-text-centered has-text-weight-semibold titre last">
-          Regarder
-        </div>
-      </div>
+
       <div class="end"></div>
-      <listeStream></listeStream>
+
+      <div class="columns">
+        <listeStream v-for="stream in streams" :stream="stream"></listeStream>
+      </div>
+
     </section>
   </div>
 </template>
@@ -56,9 +44,10 @@ import listeStream from './listeStream.vue'
 export default {
   name: 'accueil',
   components: {NavBar, listeStream},
-  
+
   data () {
     return {
+      streams: [1, 2, 3, 4, 5, 6]
     }
   },
 }

@@ -1,22 +1,16 @@
 <template>
-  <div class="columns is-multiline end">
-    <div class="column is-size-5 is-capitalized has-text-centered data">
-      Test
-    </div>
-    <div class="column is-size-5 is-uppercase has-text-centered data">
-      Nancy
-    </div>
+  <div class="column is-3" style="height: 100px;">
+    <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>
+
+    <p>Pseudo</p>
+    
     <div class="column is-size-5 has-text-centered data">
-      15/08/18
+          <router-link class="button is-success" :to="{ name:'diffusion', params : { id : 1 } }">Regarder</router-link>
     </div>
-    <div class="column is-size-5 has-text-centered data">
-      18
-    </div>
-    <div class="column is-size-5 has-text-centered data">
-          <router-link class="button is-success" :to="{ name:'diffusion', params : { id : 1 } }">
-          Regarder</router-link>
-    </div>
+
   </div>
+
+
 </template>
 
 <script>
