@@ -67,28 +67,30 @@
         <header class="modal-card-head">
           <p class="modal-card-title">Inscription</p>
         </header>
-        <section class="modal-card-body">
+        <form @submit="creerMembre">
+          <section class="modal-card-body">
 
-          <label class="label">Pseudo</label>
-          <div class="control">
-            <input class="input" type="text" placeholder="Pseudo" v-model="pseudo">
-          </div>
+            <label class="label">Pseudo</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Pseudo" v-model="pseudo">
+            </div>
 
-          <label class="label">E-mail</label>
-          <div class="control">
-            <input class="input" type="text" placeholder="E-mail" v-model="email">
-          </div>
+            <label class="label">E-mail</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="E-mail" v-model="email">
+            </div>
 
-          <label class="label">Mot de passe</label>
-          <div class="control">
-            <input class="input" type="password" placeholder="Mot de passe" v-model="password">
-          </div>
+            <label class="label">Mot de passe</label>
+            <div class="control">
+              <input class="input" type="password" placeholder="Mot de passe" v-model="password">
+            </div>
 
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-success">S'inscrire</button>
-          <button class="button" @click="modalCo=true; modalIn= false;">Connexion</button>
-        </footer>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-success">S'inscrire</button>
+            <button class="button" @click="modalCo=true; modalIn= false;">Connexion</button>
+          </footer>
+        </form>
       </div>
     </div>
 
@@ -133,12 +135,6 @@ export default {
         this.$store.commit('setMember', response.data);
         this.$store.commit('setToken',response.data.token);
 
-          axios.get('members').then((response) => {
-            this.$store.commit('setListeMember',response.data);
-          }).catch((error) => {
-          });
-
-
         window.axios.defaults.params.token = response.data.token;
 
         this.$router.push({path: '/'});
@@ -149,7 +145,29 @@ export default {
 
       });
 
+    },
+
+    creerMembre() {
+      window.axios.post('members',{
+
+        fullname : this.fullname,
+        email : this.email,
+        password : this.password
+
+      }).then((response) => {
+
+        console.log(response.data);
+        alert('Le membre '+response.data.fullname+' a été créé. Vous pouvez vous connecter');
+        this.$router.push({path: '/connexion'});
+
+      }).catch((error) => {
+
+        alert(error.response.data.error.join("\n"));
+
+      });
+
     }
+
   }
 }
 </script>

@@ -8,10 +8,7 @@
 
 	use Ramsey\Uuid\Uuid;
 
-	use \boniflux\common\models\Serie as serie;
-	use \boniflux\common\models\Partie as partie;
-	use \boniflux\common\models\Photo as photo;
-	use \boniflux\common\models\User as user;
+
 
 	class Controller {
 

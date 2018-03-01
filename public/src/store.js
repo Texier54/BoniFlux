@@ -7,7 +7,6 @@ export default new Vuex.Store({
 	state : {
 		member : false,
 		token : false,
-		listemember : false,
 	},
 	mutations : {
 		setMember(state,member) {
@@ -28,14 +27,6 @@ export default new Vuex.Store({
 		},
 		getToken() {
 			return state.token;
-		},
-		getMember(state,id) {
-			    var obj = this.state.listemember;
-
-			    for (var prop in obj) {
-			      if(obj[prop]['_id'] == id)
-			        return obj[prop];
-			    }
 		},
 	},
 })
