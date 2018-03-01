@@ -5,7 +5,7 @@
 	use \Psr\Http\Message\ServerRequestInterface as Request;
 	use \Psr\Http\Message\ResponseInterface as Response;
 	use illuminate\database\Eloquent\ModelNotFoundException as ModelNotFoundException;
-	
+
 	use Ramsey\Uuid\Uuid;
 
 	use \boniflux\common\models\Serie as serie;
@@ -34,7 +34,20 @@
 			$tab = $series;
 
 			$resp->getBody()->write(json_encode($tab));
-			return $resp;		
+			return $resp;
+
+		}
+
+		public function connexion($req, $resp, $args) {
+
+			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
+
+			$resp= $resp->withStatus(201);
+
+			$tab = '$series';
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
 
 		}
 

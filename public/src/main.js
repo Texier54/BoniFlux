@@ -11,7 +11,7 @@ Vue.component('v-marker', Vue2Leaflet.Marker);
 
 
 window.axios = axios.create({
-  baseURL: 'http://api.geoquizz.local:10080/',
+  baseURL: '../api/index.php',
 });
 
 
@@ -33,5 +33,3 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
-
-

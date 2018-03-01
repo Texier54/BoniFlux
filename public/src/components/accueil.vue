@@ -40,23 +40,23 @@
         <header class="modal-card-head">
           <p class="modal-card-title">Connexion</p>
         </header>
-        <section class="modal-card-body">
+        <form @submit="seConnecter">
+          <section class="modal-card-body">
+              <label class="label">E-mail</label>
+              <div class="control">
+                <input class="input" type="text" placeholder="E-mail" v-model="email">
+              </div>
 
-          <label class="label">Pseudo</label>
-          <div class="control">
-            <input class="input" type="text" placeholder="Pseudo">
-          </div>
-
-          <label class="label">Mot de passe</label>
-          <div class="control">
-            <input class="input" type="password" placeholder="Mot de passe">
-          </div>
-
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-success">Connexion</button>
-          <button class="button" @click="modalCo=false; modalIn= true;">Inscription</button>
-        </footer>
+              <label class="label">Mot de passe</label>
+              <div class="control">
+                <input class="input" type="password" placeholder="Mot de passe" v-model="password">
+              </div>
+          </section>
+          <footer class="modal-card-foot">
+              <input type="submit" value="Connexion" class="button is-success">
+              <button class="button" @click="modalCo=false; modalIn= true;">Inscription</button>
+          </footer>
+        </form>
       </div>
     </div>
 
@@ -71,17 +71,17 @@
 
           <label class="label">Pseudo</label>
           <div class="control">
-            <input class="input" type="text" placeholder="Pseudo">
+            <input class="input" type="text" placeholder="Pseudo" v-model="pseudo">
           </div>
 
           <label class="label">E-mail</label>
           <div class="control">
-            <input class="input" type="text" placeholder="E-mail">
+            <input class="input" type="text" placeholder="E-mail" v-model="email">
           </div>
 
           <label class="label">Mot de passe</label>
           <div class="control">
-            <input class="input" type="password" placeholder="Mot de passe">
+            <input class="input" type="password" placeholder="Mot de passe" v-model="password">
           </div>
 
         </section>
@@ -110,6 +110,9 @@ export default {
       streams: [1, 2, 3, 4, 5, 6],
       modalCo: false,
       modalIn: false,
+      email : '',
+      password : '',
+      pseudo: '',
     }
   },
   mounted() {
@@ -117,6 +120,36 @@ export default {
       this.modalCo = true;
     }
 
+  },
+  methods : {
+    seConnecter() {
+      window.axios.post('members/signin',{
+
+        email : this.email,
+        password : this.password
+
+      }).then((response) => {
+
+        this.$store.commit('setMember', response.data);
+        this.$store.commit('setToken',response.data.token);
+
+          axios.get('members').then((response) => {
+            this.$store.commit('setListeMember',response.data);
+          }).catch((error) => {
+          });
+
+
+        window.axios.defaults.params.token = response.data.token;
+
+        this.$router.push({path: '/'});
+
+      }).catch((error) => {
+
+        alert(error.response.data.error.join("\n"));
+
+      });
+
+    }
   }
 }
 </script>
