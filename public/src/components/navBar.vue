@@ -8,7 +8,7 @@
         <span></span>
         <span></span>
         <span></span>
-      </button>   
+      </button>
     </div>
     <div class="navbar-menu" id="navMenu">
       <button v-show="this.$route.path ==='/emission'" @click="suspendre" class="navbar-end nav btn button is-warning is-medium is-size-5"><i class="marker fas fa-pause-circle "></i>
@@ -18,6 +18,11 @@
         Stopper emission
       </button>
     </div>
+
+    <div v-show="this.$route.path ==='/'" class="navbar-end">
+      <button class="navbar-end nav btn button is-danger is-medium is-size-5" @click="logOut">Deconnexion</button>
+    </div>
+
 </nav>
 </template>
 
@@ -58,7 +63,9 @@ export default {
     quitter() {
       window.bus.$emit('quitterPartie');
     },
-
+    logOut() {
+      window.bus.$emit('logout');
+    },
     suspendre() {
       window.bus.$emit('suspendrePartie');
     }

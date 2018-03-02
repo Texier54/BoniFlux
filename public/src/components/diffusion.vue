@@ -7,18 +7,8 @@
           <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>
         </div>
         <div class="column is-5">
-          <img class="img" :src="img" v-show="photo">
-          <div>
-            <p class="is-size-5 has-text-weight-semibold has-text-centered is-capitalized">{{ aide }}</p>
-          </div>
-          <div class="is-size-3 has-text-centered has-text-weight-bold">
-            <p class="is-uppercase">{{ ville }}</p>
-          </div>
-          <button class="btn button is-success" v-show="btn_val" @click="valider"><i class="marker fas fa-check-circle"></i>VALIDER</button>
-          <button class="btn button is-info" v-show="btn_suiv" @click="suivant"><i class="marker fas fa-angle-double-right"></i>SUIVANT</button>
-          <div class="points is-size-4 has-text-weight-semibold">
-            <p class="score">Score : {{ score }}  ( +{{ newscore }} ! )</p>
-          </div>
+            <div id="map" height="100px">
+            </div>
         </div>
       </div>
     </section>
@@ -34,12 +24,30 @@ export default {
   components: {NavBar},
   data () {
     return {
+      map: '',
     }
   },
+
+  mounted() {
+    this.map = L.map('map', {
+      center: [1, 1],
+      zoom: 10,
+      });
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+          attribution: 'GeoQuizz',
+          minZoom: 1,
+          maxZoom: 16
+      }).addTo(this.map);
+  }
 }
 </script>
 
 <style scoped>
+
+#map{
+  min-height: 400px;
+  width: 100%;
+}
 
 .container {
   padding-top: 10px;

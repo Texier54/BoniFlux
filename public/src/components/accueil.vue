@@ -8,8 +8,7 @@
         </p>
         <div class="panel-block">
           <p class="control has-icons-left is-size-5">
-            Un jeu amusant où tu dois positionner une photo sur la carte de ta ville sans te tromper et plus vite que les autres !
-            Il est possible de choisir son niveau pour avoir plus de photos ou devoir être plus précis dans les réponses.
+              Une application web permettant de simplement diffuser en direct des flux vidéos, d'enregistrer ces flux et d'ensuite les gérer (classer, partager, supprimer, travailler la vidéo, etc.).
           </p>
         </div>
         <div class="has-text-centered is-marginless">
@@ -87,7 +86,7 @@
 
           </section>
           <footer class="modal-card-foot">
-            <button class="button is-success">S'inscrire</button>
+            <input type="submit" class="button is-success" value="S'inscrire">
             <button class="button" @click="modalCo=true; modalIn= false;">Connexion</button>
           </footer>
         </form>
@@ -121,7 +120,12 @@ export default {
     if(!this.$store.state.member) {
       this.modalCo = true;
     }
-
+    window.bus.$on('logout',() => {
+      this.$store.commit('setMember', false);
+      this.$store.commit('setToken', false);
+      this.$router.push({path: '/'});
+      this.modalCo = true;
+    })
   },
   methods : {
     seConnecter() {
@@ -131,17 +135,18 @@ export default {
         password : this.password
 
       }).then((response) => {
+console.log(response.data.token);
+        this.$store.commit('setMember', response.data.member);
+        this.$store.commit('setToken', response.data.token);
 
-        this.$store.commit('setMember', response.data);
-        this.$store.commit('setToken',response.data.token);
-
-        window.axios.defaults.params.token = response.data.token;
+        //window.axios.defaults.params.token = response.data.token;
 
         this.$router.push({path: '/'});
+        this.modalCo = false;
 
       }).catch((error) => {
 
-        alert(error.response.data.error.join("\n"));
+        alert(error);
 
       });
 
@@ -150,7 +155,7 @@ export default {
     creerMembre() {
       window.axios.post('members',{
 
-        fullname : this.fullname,
+        pseudo : this.pseudo,
         email : this.email,
         password : this.password
 
@@ -162,7 +167,7 @@ export default {
 
       }).catch((error) => {
 
-        alert(error.response.data.error.join("\n"));
+        alert(error);
 
       });
 
@@ -234,5 +239,9 @@ body {
 
 .end{
   border-bottom: 1px solid black;
+}
+
+.modal-background{
+  background-color: gray;
 }
 </style>

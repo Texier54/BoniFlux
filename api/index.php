@@ -40,9 +40,17 @@ $app->get('/streams[/]', function (Request $req, Response $resp, $args) {
     }
 );
 
+//Connexion
 $app->post('/members/signin[/]', function (Request $req, Response $resp, $args) {
     $c = new boniflux\api\control\Controller($this);
     return $c->connexion($req, $resp, $args);
+    }
+);
+
+//Inscription
+$app->post('/members[/]', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->inscription($req, $resp, $args);
     }
 );
 
