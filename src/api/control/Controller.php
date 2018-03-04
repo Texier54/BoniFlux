@@ -147,4 +147,21 @@
 			return $resp;
 		}
 
+
+		public function getabonnements($req, $resp, $args) {
+
+			$parsedBody = $req->getParsedBody();
+
+			$abonnements = new \boniflux\common\models\Abonnement();
+			$abonnements = $abonnements->where('id_abonne', '=', $args['id'])->get();
+
+
+			$resp= $resp->withStatus(201);
+
+			$tab = $abonnements;
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
+		}
+
 	}

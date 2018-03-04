@@ -75,4 +75,12 @@ $app->post('/messages/{id}', function (Request $req, Response $resp, $args) {
     }
 );
 
+
+//Get abonnements
+$app->get('/abonnements/{id}', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->getabonnements($req, $resp, $args);
+    }
+);
+
 $app->run();

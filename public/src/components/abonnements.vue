@@ -24,6 +24,14 @@ export default {
       abonnements: ['test', 'test'],
     }
   },
+
+	mounted () {
+
+		window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
+			this.abonnements = response.data;
+		}).catch((error) => {
+		});
+	}
 }
 </script>
 

@@ -1,6 +1,7 @@
 <template>
 	<div>
     <h2>MisterRIB</h2>
+		<p>{{ abonnement }}</p>
 
     <router-link class="button is-success" :to="{ name:'diffusion', params : { id : 1} }">Profil</router-link>
 
@@ -11,6 +12,7 @@
 <script>
 
 export default {
+	props: ['abonnement'],
   name: 'abonnement',
   components: {},
   data () {
