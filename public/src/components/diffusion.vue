@@ -4,6 +4,7 @@
     <section class="container">
       <div class="columns">
         <div class="column is-8" style="height: 500px;">
+          <h2>{{ stream.nom }}</h2>
           <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>
         </div>
         <div class="column is-3">
@@ -37,6 +38,7 @@ export default {
       map: '',
       messages: '',
       editMessage: '',
+      stream: '',
     }
   },
 
@@ -68,20 +70,28 @@ export default {
   },
   mounted() {
 
+    window.axios.get('stream/'+this.$route.params.id).then((response) => {
+      this.stream = response.data;
+
+      this.map = L.map('map', {
+        center: [this.stream.latitude, this.stream.longitude],
+        zoom: 12,
+        });
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: 'GeoQuizz',
+            minZoom: 1,
+            maxZoom: 16
+        }).addTo(this.map);
+
+    }).catch((error) => {
+    });
+
     window.axios.get('messages/'+this.$route.params.id).then((response) => {
       this.messages = response.data;
     }).catch((error) => {
     });
 
-    this.map = L.map('map', {
-      center: [48.7, 6],
-      zoom: 12,
-      });
-      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-          attribution: 'GeoQuizz',
-          minZoom: 1,
-          maxZoom: 16
-      }).addTo(this.map);
+
   }
 }
 </script>

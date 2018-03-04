@@ -60,6 +60,8 @@ CREATE TABLE stream(
         nom         Varchar (50) ,
         description Longtext ,
         etat        Int ,
+		latitude	Float ,
+		longitude	Float ,
         created_at  Datetime ,
         updated_at   Datetime ,
         deleted_at  Datetime ,

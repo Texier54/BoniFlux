@@ -35,6 +35,28 @@
 
 		}
 
+
+		public function getstream($req, $resp, $args) {
+
+			$stream = new \boniflux\common\models\Stream();
+
+			try {
+			$stream = $stream->where('id', '=', $args['id'])->firstOrFail();
+			} catch(\Exception $e) {
+				echo $e->getmessage();
+			}
+
+			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
+
+			$resp= $resp->withStatus(201);
+
+			$tab = $stream;
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
+
+		}
+
 		public function connexion($req, $resp, $args) {
 
 			$parsedBody = $req->getParsedBody();

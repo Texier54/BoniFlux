@@ -40,6 +40,12 @@ $app->get('/streams[/]', function (Request $req, Response $resp, $args) {
     }
 );
 
+$app->get('/stream/{id}', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->getstream($req, $resp, $args);
+    }
+);
+
 //Connexion
 $app->post('/members/signin[/]', function (Request $req, Response $resp, $args) {
     $c = new boniflux\api\control\Controller($this);
