@@ -2,10 +2,10 @@
   <div class="column is-3" style="height: 100px;">
     <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 300%;" frameborder="0" allowfullscreen ></iframe>
 
-    <p>Pseudo</p>
+    <p>{{ stream.nom }}</p>
 
     <div class="column is-size-5 has-text-centered data">
-          <router-link class="button is-success" :to="{ name:'diffusion', params : { id : 1 } }">Regarder</router-link>
+          <router-link class="button is-success" :to="{ name:'diffusion', params : { id : stream.id } }">Regarder</router-link>
     </div>
 
   </div>
@@ -16,6 +16,7 @@
 <script>
 
 export default {
+  props: ['stream'],
   name: 'listeStream',
   data () {
     return {

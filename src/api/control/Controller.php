@@ -21,8 +21,8 @@
 
 		public function stream($req, $resp, $args) {
 
-			$stream = new serie();
-			$stream = $stream->get();
+			$stream = new \boniflux\common\models\Stream();
+			$stream = $stream->limit(5)->get();
 
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
 
@@ -77,7 +77,7 @@
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
 
 			$resp= $resp->withStatus(201);
-
+				//password_hash($password, PASSWORD_DEFAULT);
 			$tab = '$series';
 
 			$resp->getBody()->write(json_encode($tab));
@@ -87,11 +87,14 @@
 
 		public function getmessage($req, $resp, $args) {
 
+			$messages = new \boniflux\common\models\Message();
+			$messages = $messages->get();
+
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
 
 			$resp= $resp->withStatus(201);
 
-			$tab = ['test', 'test'];
+			$tab = $messages;
 
 			$resp->getBody()->write(json_encode($tab));
 			return $resp;

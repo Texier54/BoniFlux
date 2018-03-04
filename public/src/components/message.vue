@@ -1,10 +1,11 @@
 <template>
-  <p>Jean : Salut !</p>
+  <p>{{ message.id_user}} : {{ message.texte }}</p>
 </template>
 
 <script>
 
 export default {
+  props: ['message'],
   name: 'message',
   data () {
     return {

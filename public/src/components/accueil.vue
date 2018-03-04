@@ -126,6 +126,12 @@ export default {
       this.$router.push({path: '/'});
       this.modalCo = true;
     })
+
+    window.axios.get('streams').then((response) => {
+      this.streams = response.data;
+    }).catch((error) => {
+    });
+
   },
   methods : {
     seConnecter() {
