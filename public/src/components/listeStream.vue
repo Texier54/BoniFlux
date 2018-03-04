@@ -3,7 +3,7 @@
     <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>
 
     <p>Pseudo</p>
-    
+
     <div class="column is-size-5 has-text-centered data">
           <router-link class="button is-success" :to="{ name:'diffusion', params : { id : 1 } }">Regarder</router-link>
     </div>

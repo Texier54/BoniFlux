@@ -14,7 +14,7 @@ export default new Router({
       name: 'accueil',
     },
     { path: '/emission', name: 'emission', component: emission},
-    { path: '/diffusion', name: 'diffusion', component: diffusion},
+    { path: '/diffusion/:id', name: 'diffusion', component: diffusion},
     { path: '*', component: accueil}
   ]
 })

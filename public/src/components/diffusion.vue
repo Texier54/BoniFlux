@@ -6,10 +6,18 @@
         <div class="column is-7" style="height: 500px;">
           <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>
         </div>
-        <div class="column is-5">
+        <div class="column is-3">
+            <p>Chat</p>
+            <input class="input" placeholder="Message">
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column is-4">
             <div id="map" height="100px">
             </div>
         </div>
+        <a class="button is-link">S'abonner</a>
       </div>
     </section>
   </div>
