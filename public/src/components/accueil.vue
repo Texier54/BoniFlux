@@ -43,12 +43,12 @@
           <section class="modal-card-body">
               <label class="label">E-mail</label>
               <div class="control">
-                <input class="input" type="text" placeholder="E-mail" v-model="email">
+                <input class="input" type="text" placeholder="E-mail" v-model="email" required>
               </div>
 
               <label class="label">Mot de passe</label>
               <div class="control">
-                <input class="input" type="password" placeholder="Mot de passe" v-model="password">
+                <input class="input" type="password" placeholder="Mot de passe" v-model="password" required>
               </div>
           </section>
           <footer class="modal-card-foot">
@@ -71,23 +71,23 @@
 
             <label class="label">Pseudo</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Pseudo" v-model="pseudo">
+              <input class="input" type="text" placeholder="Pseudo" v-model="pseudo" required>
             </div>
 
             <label class="label">E-mail</label>
             <div class="control">
-              <input class="input" type="text" placeholder="E-mail" v-model="email">
+              <input class="input" type="text" placeholder="E-mail" v-model="email" required>
             </div>
 
             <label class="label">Mot de passe</label>
             <div class="control">
-              <input class="input" type="password" placeholder="Mot de passe" v-model="password">
+              <input class="input" type="password" placeholder="Mot de passe" v-model="password" required>
             </div>
 
           </section>
           <footer class="modal-card-foot">
             <input type="submit" class="button is-success" value="S'inscrire">
-            <button class="button" @click="modalCo=true; modalIn= false;">Connexion</button>
+            <a class="button" @click="modalCo=true; modalIn= false;">Connexion</a>
           </footer>
         </form>
       </div>
@@ -164,6 +164,8 @@ export default {
         console.log(response.data);
         alert('Le membre '+response.data.fullname+' a été créé. Vous pouvez vous connecter');
         this.$router.push({path: '/connexion'});
+        this.modalCo=true;
+        this.modalIn= false;
 
       }).catch((error) => {
 
