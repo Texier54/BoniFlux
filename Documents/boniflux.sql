@@ -15,7 +15,7 @@ CREATE TABLE user(
         email      Varchar (50) ,
         password   Varchar (255) ,
         created_at Datetime ,
-        update_at  Datetime ,
+        updated_at  Datetime ,
         deleted    Datetime ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
@@ -32,7 +32,7 @@ CREATE TABLE video(
         token       Varchar (255) ,
         etat        Int ,
         created_at  Datetime ,
-        update_at   Datetime ,
+        updated_at   Datetime ,
         deleted_at  Datetime ,
         id_user     Int ,
         PRIMARY KEY (id )
@@ -61,7 +61,7 @@ CREATE TABLE stream(
         description Longtext ,
         etat        Int ,
         created_at  Datetime ,
-        update_at   Datetime ,
+        updated_at   Datetime ,
         deleted_at  Datetime ,
         id_user     Int ,
         id_urgence  Int ,
@@ -77,7 +77,7 @@ CREATE TABLE message(
         id         int (11) Auto_increment  NOT NULL ,
         texte      Longtext ,
         created_at Datetime ,
-        update_at  Datetime ,
+        updated_at  Datetime ,
         id_stream  Int ,
         id_user    Int ,
         PRIMARY KEY (id )

@@ -47,7 +47,8 @@ export default {
       window.axios.post('messages/'+this.$route.params.id,{
 
         message : this.editMessage,
-        pseudo : 'pseudo',
+        id_stream : this.$route.params.id,
+        id_user : this.$store.state.member.id,
 
       }).then((response) => {
 
@@ -55,6 +56,7 @@ export default {
         window.axios.get('messages/'+this.$route.params.id).then((response) => {
           this.messages = response.data;
         }).catch((error) => {
+          alert(error);
         });
 
       }).catch((error) => {

@@ -104,8 +104,25 @@
 
 		public function postmessage($req, $resp, $args) {
 
+			$parsedBody = $req->getParsedBody();
 
+			$message = new \boniflux\common\models\Message();
+			$message->id_user = $parsedBody['id_user'];
+			$message->id_stream = $parsedBody['id_stream'];
+			$message->texte = $parsedBody['message'];
 
+			try {
+				$message->save();
+			} catch(\Exception $e) {
+				echo $e->getmessage();
+			}
+
+			$resp= $resp->withStatus(201);
+
+			$tab = $messages;
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
 		}
 
 	}
