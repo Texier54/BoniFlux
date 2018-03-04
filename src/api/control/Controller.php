@@ -88,7 +88,7 @@
 		public function getmessage($req, $resp, $args) {
 
 			$messages = new \boniflux\common\models\Message();
-			$messages = $messages->get();
+			$messages = $messages->where('id_stream', '=', $args['id'])->limit(10)->get();
 
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
 
