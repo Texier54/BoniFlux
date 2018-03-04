@@ -21,14 +21,14 @@
 
 		public function stream($req, $resp, $args) {
 
-			$series = new serie();
-			$series = $series->get();
+			$stream = new serie();
+			$stream = $stream->get();
 
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
 
 			$resp= $resp->withStatus(201);
 
-			$tab = $series;
+			$tab = $stream;
 
 			$resp->getBody()->write(json_encode($tab));
 			return $resp;
@@ -37,14 +37,38 @@
 
 		public function connexion($req, $resp, $args) {
 
-			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
+			$parsedBody = $req->getParsedBody();
 
-			$resp= $resp->withStatus(201);
+			$user = new \boniflux\common\models\User();
 
-			$tab = ['member' => 'zfzf', 'token' => 'fzfzzffzzfzf'];
+			try {
+				$user = $user->where('email', '=', $parsedBody['email'])->firstOrFail();
+			} catch(\Exception $e) {
+				echo $e->getmessage();
+			}
 
-			$resp->getBody()->write(json_encode($tab));
-			return $resp;
+			if(password_verify($parsedBody['password'], $user->password))
+			{
+				$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
+
+				$resp= $resp->withStatus(201);
+
+				$tab = ['member' => $user, 'token' => 'fzfzzffzzfzf'];
+
+				$resp->getBody()->write(json_encode($tab));
+				return $resp;
+			}
+			else
+			{
+				$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
+
+				$resp= $resp->withStatus(404);
+
+				$tab = ['message' => 'Mauvaise authentification'];
+
+				$resp->getBody()->write(json_encode($tab));
+				return $resp;
+			}
 
 		}
 
