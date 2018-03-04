@@ -61,4 +61,24 @@
 
 		}
 
+		public function getmessage($req, $resp, $args) {
+
+			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
+
+			$resp= $resp->withStatus(201);
+
+			$tab = ['test', 'test'];
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
+
+		}
+
+
+		public function postmessage($req, $resp, $args) {
+
+
+
+		}
+
 	}

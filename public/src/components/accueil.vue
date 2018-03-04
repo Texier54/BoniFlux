@@ -135,7 +135,7 @@ export default {
         password : this.password
 
       }).then((response) => {
-console.log(response.data.token);
+
         this.$store.commit('setMember', response.data.member);
         this.$store.commit('setToken', response.data.token);
 

@@ -7,8 +7,9 @@
           <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>
         </div>
         <div class="column is-3">
-            <p>Chat</p>
-            <input class="input" placeholder="Message">
+            <h2>Chat</h2>
+            <message v-for="message in messages" :message="message"></message>
+            <input @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
         </div>
       </div>
 
@@ -26,17 +27,50 @@
 <script>
 
 import NavBar from './navBar.vue'
+import message from './message.vue'
 
 export default {
   name: 'diffusion',
-  components: {NavBar},
+  components: {NavBar, message},
   data () {
     return {
       map: '',
+      messages: '',
+      editMessage: '',
     }
   },
 
+  methods : {
+    saveMess() {
+
+
+      window.axios.post('messages/'+this.$route.params.id,{
+
+        message : this.editMessage,
+        pseudo : 'pseudo',
+
+      }).then((response) => {
+
+        this.editMessage = '';
+        window.axios.get('messages/'+this.$route.params.id).then((response) => {
+          this.messages = response.data;
+        }).catch((error) => {
+        });
+
+      }).catch((error) => {
+        alert(error);
+      });
+
+
+    },
+  },
   mounted() {
+
+    window.axios.get('messages/'+this.$route.params.id).then((response) => {
+      this.messages = response.data;
+    }).catch((error) => {
+    });
+
     this.map = L.map('map', {
       center: [1, 1],
       zoom: 10,

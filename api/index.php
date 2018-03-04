@@ -55,4 +55,18 @@ $app->post('/members[/]', function (Request $req, Response $resp, $args) {
 );
 
 
+//Messages chat
+$app->get('/messages/{id}', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->getmessage($req, $resp, $args);
+    }
+);
+
+//Messages chat
+$app->post('/messages/{id}', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->postmessage($req, $resp, $args);
+    }
+);
+
 $app->run();
