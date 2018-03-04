@@ -11,8 +11,11 @@
       </button>
     </div>
     <div class="navbar-menu" id="navMenu">
+
+      <router-link v-show="this.$route.path !=='/abonnements'" class="navbar-end nav btn button is-success is-medium is-size-5" :to="{ name:'abonnements', params : {} }"><i class="marker fas fa-folder-open "></i>Abonnement</router-link>
+
       <button v-show="this.$route.path ==='/emission'" @click="suspendre" class="navbar-end nav btn button is-warning is-medium is-size-5"><i class="marker fas fa-pause-circle "></i>
-        Susprendre partie
+        Temp
       </button>
       <button v-show="this.$route.path ==='/emission'" @click="quitter" class="navbar-end nav btn button is-danger is-medium is-size-5"><i class="marker fas fa-power-off"></i>
         Stopper emission

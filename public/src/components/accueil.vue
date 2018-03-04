@@ -108,7 +108,7 @@ export default {
 
   data () {
     return {
-      streams: [1, 2, 3, 4, 5, 6],
+      streams: [1, 2, 3, 4, 5],
       modalCo: false,
       modalIn: false,
       email : '',
@@ -168,9 +168,7 @@ export default {
         this.modalIn= false;
 
       }).catch((error) => {
-
         alert(error);
-
       });
 
     }

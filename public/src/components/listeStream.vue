@@ -1,6 +1,6 @@
 <template>
   <div class="column is-3" style="height: 100px;">
-    <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>
+    <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 300%;" frameborder="0" allowfullscreen ></iframe>
 
     <p>Pseudo</p>
 

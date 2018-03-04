@@ -3,7 +3,7 @@
     <nav-bar></nav-bar>
     <section class="container">
       <div class="columns">
-        <div class="column is-7" style="height: 500px;">
+        <div class="column is-8" style="height: 500px;">
           <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>
         </div>
         <div class="column is-3">
@@ -14,7 +14,7 @@
       </div>
 
       <div class="columns">
-        <div class="column is-4">
+        <div class="column is-6">
             <div id="map" height="100px">
             </div>
         </div>
@@ -72,8 +72,8 @@ export default {
     });
 
     this.map = L.map('map', {
-      center: [1, 1],
-      zoom: 10,
+      center: [48.7, 6],
+      zoom: 12,
       });
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           attribution: 'GeoQuizz',
