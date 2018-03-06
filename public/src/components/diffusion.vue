@@ -20,7 +20,7 @@
             </div>
         </div>
         <a class="button is-link" v-show="ifabo" @click="abo">S'abonner</a>
-	<a class="button is-link" v-hide="ifabo" @click="deabo">Se désabonner</a>
+	      <a class="button is-danger" v-show="!ifabo">Se désabonner</a>
       </div>
     </section>
   </div>
@@ -41,7 +41,7 @@ export default {
       editMessage: '',
       stream: '',
       abonnements: '',
-      ifabo: false,
+      ifabo: true,
     }
   },
 
@@ -56,6 +56,7 @@ export default {
 
       }).then((response) => {
 
+        this.ifabo = false;
 
       }).catch((error) => {
         alert(error);
@@ -114,7 +115,13 @@ export default {
 
 	window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
 		this.abonnements = response.data;
-		//verif abo existe
+    for(var i= 0; i < this.abonnements.length; i++)
+    {
+		    if(this.abonnements[i].id_streamer == this.$route.params.id)
+        {
+          this.ifabo = false;
+        }
+    }
 	}).catch((error) => {
 	});
 

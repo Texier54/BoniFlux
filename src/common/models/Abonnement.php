@@ -6,7 +6,7 @@ class Abonnement extends \Illuminate\Database\Eloquent\Model {
 
     protected $table = 'abonnement';
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = false;
 
 
 }

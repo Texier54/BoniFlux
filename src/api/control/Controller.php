@@ -169,8 +169,8 @@
 			$parsedBody = $req->getParsedBody();
 
 			$abonnement = new \boniflux\common\models\Abonnement();
-			$abonnement->id_abonne = $parsedBody['id_user'];
-			$abonnement->id_streamer = $parsedBody['id_stream'];
+			$abonnement->id_abonne = $parsedBody['id_abonne'];
+			$abonnement->id_streamer = $parsedBody['id_streamer'];
 
 			try {
 				$abonnement->save();
