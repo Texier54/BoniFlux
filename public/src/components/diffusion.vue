@@ -19,7 +19,7 @@
             <div id="map" height="100px">
             </div>
         </div>
-        <a class="button is-link">S'abonner</a>
+        <a class="button is-link" @click="abo">S'abonner</a>
       </div>
     </section>
   </div>
@@ -43,6 +43,24 @@ export default {
   },
 
   methods : {
+
+    abo() {
+
+      window.axios.post('abonnement',{
+
+        id_streamer : this.$route.params.id,
+        id_abonne : this.$store.state.member.id,
+
+      }).then((response) => {
+
+
+      }).catch((error) => {
+        alert(error);
+      });
+
+
+    },
+
     saveMess() {
 
 

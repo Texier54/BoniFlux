@@ -164,4 +164,26 @@
 			return $resp;
 		}
 
+		public function postabonnement($req, $resp, $args) {
+
+			$parsedBody = $req->getParsedBody();
+
+			$abonnement = new \boniflux\common\models\Abonnement();
+			$abonnement->id_abonne = $parsedBody['id_user'];
+			$abonnement->id_streamer = $parsedBody['id_stream'];
+
+			try {
+				$abonnement->save();
+			} catch(\Exception $e) {
+				echo $e->getmessage();
+			}
+
+			$resp= $resp->withStatus(201);
+
+			$tab = $messages;
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
+		}
+
 	}

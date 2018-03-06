@@ -83,4 +83,10 @@ $app->get('/abonnements/{id}', function (Request $req, Response $resp, $args) {
     }
 );
 
+//Post abonnements
+$app->get('/abonnements[/]', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->postabonnement($req, $resp, $args);
+    }
+);
 $app->run();
