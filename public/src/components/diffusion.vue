@@ -19,7 +19,8 @@
             <div id="map" height="100px">
             </div>
         </div>
-        <a class="button is-link" @click="abo">S'abonner</a>
+        <a class="button is-link" v-show="ifabo" @click="abo">S'abonner</a>
+	<a class="button is-link" v-hide="ifabo" @click="deabo">Se désabonner</a>
       </div>
     </section>
   </div>
@@ -39,6 +40,8 @@ export default {
       messages: '',
       editMessage: '',
       stream: '',
+      abonnements: '',
+      ifabo: false,
     }
   },
 
@@ -109,6 +112,11 @@ export default {
     }).catch((error) => {
     });
 
+	window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
+		this.abonnements = response.data;
+		//verif abo existe
+	}).catch((error) => {
+	});
 
   }
 }
