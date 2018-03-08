@@ -117,7 +117,7 @@ export default {
 		this.abonnements = response.data;
     for(var i= 0; i < this.abonnements.length; i++)
     {
-		    if(this.abonnements[i].id_streamer == this.$route.params.id)
+		    if(this.abonnements[i].id_streamer == this.stream.id_user)
         {
           this.ifabo = false;
         }

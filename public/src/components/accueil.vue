@@ -151,7 +151,7 @@ export default {
         this.modalCo = false;
 
       }).catch((error) => {
-
+        console.log(error);
         alert(error);
 
       });
