@@ -69,6 +69,16 @@
         <form @submit="creerMembre">
           <section class="modal-card-body">
 
+            <label class="label">Nom</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Nom" v-model="nom" required>
+            </div>
+
+            <label class="label">Prénom</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Prénom" v-model="prenom" required>
+            </div>
+
             <label class="label">Pseudo</label>
             <div class="control">
               <input class="input" type="text" placeholder="Pseudo" v-model="pseudo" required>
@@ -111,6 +121,8 @@ export default {
       streams: [1, 2, 3, 4, 5],
       modalCo: false,
       modalIn: false,
+      nom : '',
+      prenom : '',
       email : '',
       password : '',
       pseudo: '',
@@ -161,6 +173,8 @@ export default {
     creerMembre() {
       window.axios.post('members',{
 
+        nom : this.nom,
+        prenom : this.prenom,
         pseudo : this.pseudo,
         email : this.email,
         password : this.password
@@ -168,7 +182,7 @@ export default {
       }).then((response) => {
 
         console.log(response.data);
-        alert('Le membre '+response.data.fullname+' a été créé. Vous pouvez vous connecter');
+        alert('Le membre '+response.data.pseudo+' a été créé. Vous pouvez vous connecter');
         this.$router.push({path: '/connexion'});
         this.modalCo=true;
         this.modalIn= false;

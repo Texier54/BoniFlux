@@ -96,15 +96,27 @@
 
 		public function inscription($req, $resp, $args) {
 
-			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
+			$parsedBody = $req->getParsedBody();
+
+			$inscription = new \boniflux\common\models\User();
+			$inscription->nom = $parsedBody['nom'];
+			$inscription->prenom = $parsedBody['prenom'];
+			$inscription->pseudo = $parsedBody['pseudo'];
+			$inscription->email = $parsedBody['email'];
+			$inscription->password = password_hash($parsedBody['password'], PASSWORD_BCRYPT);
+
+			try {
+				$inscription->save();
+			} catch(\Exception $e) {
+				echo $e->getmessage();
+			}
 
 			$resp= $resp->withStatus(201);
-				//password_hash($password, PASSWORD_DEFAULT);
-			$tab = '$series';
+
+			$tab = $inscription;
 
 			$resp->getBody()->write(json_encode($tab));
 			return $resp;
-
 		}
 
 		public function getmessage($req, $resp, $args) {
