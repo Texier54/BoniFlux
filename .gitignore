@@ -1,2 +1,3 @@
 /public/node_modules
 /src/vendor
+/src/conf/boniflux.db.conf.ini

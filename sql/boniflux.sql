@@ -31,7 +31,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `abonnement` (
   `id` int(11) NOT NULL,
   `id_streamer` int(11) DEFAULT NULL,
-  `id_abonne` int(11) DEFAULT NULL
+  `id_abonne` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -82,7 +85,7 @@ CREATE TABLE `stream` (
   `latitude` float NOT NULL,
   `longitude` float NOT NULL,
   `created_at` datetime DEFAULT NULL,
-  `update_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `id_user` int(11) DEFAULT NULL,
   `id_urgence` int(11) DEFAULT NULL
@@ -125,7 +128,7 @@ CREATE TABLE `user` (
   `email` varchar(50) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `update_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `deleted` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -152,7 +155,7 @@ CREATE TABLE `video` (
   `token` varchar(255) DEFAULT NULL,
   `etat` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `update_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `id_user` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
