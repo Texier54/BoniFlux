@@ -198,4 +198,27 @@
 			return $resp;
 		}
 
+		public function delabonnement($req, $resp, $args) {
+
+			$parsedBody = $req->getParsedBody();
+
+			$abonnement = new \boniflux\common\models\Abonnement();
+			$abonnement = $abonnement->where('id_streamer', '=', 2)->firstOrFail();
+			$abonnement->delete();
+
+			try {
+				$abonnement->save();
+			} catch(\Exception $e) {
+				echo $e->getmessage();
+			}
+
+			$resp= $resp->withStatus(201);
+
+			$tab = $abonnement;
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
+
+		}
+
 	}
