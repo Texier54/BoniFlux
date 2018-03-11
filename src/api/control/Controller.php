@@ -238,4 +238,20 @@
 			return $resp;
 		}
 
+
+		public function postvideo($req, $resp, $args) {
+
+			$parsedBody = $req->getParsedBody();
+
+
+			$resp= $resp->withStatus(201);
+
+
+
+			$tab = $parsedBody['image'];
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
+		}
+
 	}
