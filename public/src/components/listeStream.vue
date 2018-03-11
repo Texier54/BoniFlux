@@ -3,6 +3,7 @@
     <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 300%;" frameborder="0" allowfullscreen ></iframe>
 
     <p>{{ stream.nom }}</p>
+    <strong>{{ user.pseudo }}</strong>
 
     <div class="column is-size-5 has-text-centered data">
           <router-link class="button is-success" :to="{ name:'diffusion', params : { id : stream.id } }">Regarder</router-link>
@@ -20,8 +21,15 @@ export default {
   name: 'listeStream',
   data () {
     return {
+      user: '',
     }
   },
+  mounted() {
+    window.axios.get('user/'+this.stream).then((response) => {
+      this.user = response.data;
+    }).catch((error) => {
+    });
+  }
 }
 </script>
 
@@ -57,11 +65,6 @@ export default {
 .last{
   border-radius: 0px 5px 5px 0px;
 }
-
-.marker{
-  margin-right: 10px;
-}
-
 .end{
   border-bottom: 1px solid black;
 }

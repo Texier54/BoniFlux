@@ -1,7 +1,6 @@
 <template>
-	<div>
-    <h2>Vos abonnements</h2>
-		<p>{{ abonnement }}</p>
+  <div class="column is-4">
+		<strong>{{ user.pseudo }}</strong><br>
 
     <router-link class="button is-success" :to="{ name:'diffusion', params : { id : 1} }">Profil</router-link>
 
@@ -17,6 +16,7 @@ export default {
   components: {},
   data () {
     return {
+			user: '',
     }
   },
   methods : {
@@ -35,7 +35,13 @@ export default {
         alert(error);
       });
     }
-  }
+  },
+	mounted() {
+		window.axios.get('user/'+this.abonnement.id_streamer).then((response) => {
+      this.user = response.data;
+    }).catch((error) => {
+    });
+	}
 }
 </script>
 

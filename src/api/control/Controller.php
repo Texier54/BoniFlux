@@ -221,4 +221,21 @@
 
 		}
 
+
+		public function getuser($req, $resp, $args) {
+
+			$parsedBody = $req->getParsedBody();
+
+			$user = new \boniflux\common\models\User();
+			$user = $user->where('id', '=', $args['id'])->firstOrFail();
+
+
+			$resp= $resp->withStatus(201);
+
+			$tab = $user;
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
+		}
+
 	}

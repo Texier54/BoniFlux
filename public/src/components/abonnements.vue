@@ -3,9 +3,10 @@
 		<nav-bar></nav-bar>
     <section>
   		<div class="columns">
-  			<div class="column is-7">
+					<h2>Vos abonnements</h2>
+			</div>
+			<div class="columns">
       		<abonnement v-for="abonnement in abonnements" :abonnement="abonnement"></abonnement>
-        </div>
   		</div>
     </section>
 	</div>
@@ -43,5 +44,13 @@ export default {
 </script>
 
 <style scoped>
-
+h2 {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	font-size: 24px;
+}
+.columns {
+	margin-left: 20px;
+}
 </style>
