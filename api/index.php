@@ -91,7 +91,15 @@ $app->post('/abonnement[/]', function (Request $req, Response $resp, $args) {
 );
 
 //Delete abonnements
-$app->post('/desabonnement/{id}[/]', function (Request $req, Response $resp, $args) {
+$app->post('/desabonnement[/]', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->delabonnement($req, $resp, $args);
+    }
+);
+
+
+//Get User
+$app->post('/desabonnement[/]', function (Request $req, Response $resp, $args) {
     $c = new boniflux\api\control\Controller($this);
     return $c->delabonnement($req, $resp, $args);
     }

@@ -203,7 +203,7 @@
 			$parsedBody = $req->getParsedBody();
 
 			$abonnement = new \boniflux\common\models\Abonnement();
-			$abonnement = $abonnement->where('id_streamer', '=', 2)->firstOrFail();
+			$abonnement = $abonnement->where('id_streamer', '=', $parsedBody['id_streamer'])->where('id_abonne', '=', $parsedBody['id_abonne'])->firstOrFail();
 			$abonnement->delete();
 
 			try {

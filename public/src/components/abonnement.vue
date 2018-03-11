@@ -21,14 +21,15 @@ export default {
   },
   methods : {
     desabonner() {
-      window.axios.post('desabonnement/'+this.$route.params.id,{
+      window.axios.post('desabonnement/',{
 
-        id_streamer : this.$route.params.id,
+        id_streamer : this.abonnement.id_streamer,
         id_abonne : this.$store.state.member.id,
 
       }).then((response) => {
 
         alert("Vous vous êtes désabonner !");
+				window.bus.$emit('updateAbonnements');
 
       }).catch((error) => {
         alert(error);

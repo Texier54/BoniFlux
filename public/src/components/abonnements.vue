@@ -21,11 +21,18 @@ export default {
   components: {NavBar, abonnement},
   data () {
     return {
-      abonnements: ['test', 'test'],
+      abonnements: '',
     }
   },
 
 	mounted () {
+
+		window.bus.$on('updateAbonnements',() => {
+			window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
+				this.abonnements = response.data;
+			}).catch((error) => {
+			});
+    })
 
 		window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
 			this.abonnements = response.data;
