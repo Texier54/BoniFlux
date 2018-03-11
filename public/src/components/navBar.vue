@@ -4,26 +4,17 @@
       <a href="/" class="navbar-item">
         <b class="is-size-2"><i class="marker fas fa-video"></i>BoniFlux</b>
       </a>
-      <button v-show="this.$route.path ==='/partie'" class="button navbar-burger btnreduc" data-target="navMenu">
+      <button class="button navbar-burger btnreduc" data-target="navMenu">
         <span></span>
         <span></span>
         <span></span>
       </button>
     </div>
     <div class="navbar-menu" id="navMenu">
-
-      <router-link v-show="this.$route.path !=='/abonnements'" class="navbar-end nav btn button is-success is-medium is-size-5" :to="{ name:'abonnements', params : {} }"><i class="marker fas fa-folder-open "></i>Abonnement</router-link>
-
-      <button v-show="this.$route.path ==='/emission'" @click="suspendre" class="navbar-end nav btn button is-warning is-medium is-size-5"><i class="marker fas fa-pause-circle "></i>
-        Temp
-      </button>
-      <button v-show="this.$route.path ==='/emission'" @click="quitter" class="navbar-end nav btn button is-danger is-medium is-size-5"><i class="marker fas fa-power-off"></i>
-        Stopper emission
-      </button>
-    </div>
-
-    <div v-show="this.$route.path ==='/'" class="navbar-end">
-      <button class="navbar-end nav btn button is-danger is-medium is-size-5" @click="logOut">Deconnexion</button>
+      <div class="navbar-end">
+        <router-link v-show="this.$route.path !=='/abonnements'" class="nav btn button is-success is-medium " :to="{ name:'abonnements', params : {} }"><i class="marker fas fa-folder-open "></i>Abonnement</router-link>
+        <button class="nav btn button is-danger is-medium" @click="logOut">Deconnexion</button>
+      </div>
     </div>
 
 </nav>
@@ -106,11 +97,6 @@ export default {
 
 .btnreduc:hover{
   color:#FFFFFF;
-}
-
-.marker{
-  margin-top: 5px;
-  margin-right: 10px;
 }
 
 .navbar-burger {

@@ -131,14 +131,11 @@ export default {
 
 <style scoped>
 
-#map{
-  min-height: 400px;
-  width: 100%;
+h2 {
+  font-size: 26px;
+  padding: 4px 4px;
 }
 
-.container {
-  padding-top: 10px;
-}
 
 body {
   background-color: #F2F6FA;
@@ -163,25 +160,6 @@ body {
 .btn:hover{
   color: #363636;
 
-}
-
-.img{
-  border-radius: 5px;
-}
-
-.points{
-  margin-top: 20px;
-}
-
-.score{
-  border: solid #363636 2px;
-  border-radius: 10px;
-  padding-left: 5px;
-  margin-bottom: 32px;
-}
-
-.marker{
-  margin-right: 10px;
 }
 
 </style>
