@@ -12,8 +12,13 @@
           </p>
         </div>
         <div class="has-text-centered is-marginless">
-          <router-link class="button is-link is-large is-capitalized has-text-weight-bold" :to="{ name:'emission', params : {} }">
-          <i class="marker fas fa-circle" style="color: red;"></i>Démarer un Stream</router-link>
+          <!--<router-link class="button is-link is-large is-capitalized has-text-weight-bold" :to="{ name:'emission', params : {} }">
+          <i class="marker fas fa-circle" style="color: red;"></i>Démarer un Stream</router-link>-->
+
+          <!-- Bouton pour modal stream -->
+          <button class="button is-link is-large is-capitalized has-text-weight-bold" @click="modalStart=true;"><i class="marker fas fa-circle" style="color: red;"></i>Démarrer le Stream</button>
+          <!-- Bouton pour modal stream -->
+
         </div>
       </nav>
       <div class="border">
@@ -103,6 +108,39 @@
       </div>
     </div>
 
+    <div v-show="modalStart" class="modal is-active">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Initialiser le stream</p>
+        </header>
+        <form @submit="demarrerStream">
+          <section class="modal-card-body">
+
+              <label class="label">Nom du stream</label>
+              <div class="control">
+                <input class="input" type="text" placeholder="Nom du stream" v-model="nomStream" required>
+              </div>
+
+              <label class="label">Description</label>
+              <div class="control">
+                <input class="input" type="text" placeholder="Description" v-model="descriptionStream">
+              </div>
+
+              <label class="label">Activer le mode Urgence ?</label>
+              <div class="control">
+               <input id="checkBox" type="checkbox" v-model="urgence">
+              </div>
+
+          </section>
+          <footer class="modal-card-foot">
+              <input type="submit" value="Lancer le stream" class="button is-success">
+              <button class="button" @click="modalStart=false;">Annuler</button>
+          </footer>
+        </form>
+      </div>
+    </div>
+
 
   </div>
 </template>
@@ -121,11 +159,15 @@ export default {
       streams: [1, 2, 3, 4, 5],
       modalCo: false,
       modalIn: false,
+      modalStart: false,
       nom : '',
       prenom : '',
       email : '',
       password : '',
       pseudo: '',
+      nomStream : '',
+      descriptionStream : '',
+      urgence : false,
     }
   },
   mounted() {
@@ -186,6 +228,24 @@ export default {
         this.$router.push({path: '/connexion'});
         this.modalCo=true;
         this.modalIn= false;
+
+      }).catch((error) => {
+        alert(error);
+      });
+
+    },
+
+    demarrerStream() {
+      window.axios.post('createStream',{
+
+        nomStream : this.nomStream,
+        descriptionStream : this.descriptionStream,
+        urgence : this.urgence
+
+      }).then((response) => {
+
+        this.$router.push({path: '/emission'});
+        this.modalStart=false;
 
       }).catch((error) => {
         alert(error);
