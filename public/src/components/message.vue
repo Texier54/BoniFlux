@@ -1,5 +1,5 @@
 <template>
-  <p>{{ message.id_user}} : {{ message.texte }}</p>
+  <p>{{ user.pseudo }} : {{ message.texte }}</p>
 </template>
 
 <script>
@@ -9,8 +9,15 @@ export default {
   name: 'message',
   data () {
     return {
+      user: '',
     }
   },
+  mounted() {
+    window.axios.get('user/'+this.message.id_stream).then((response) => {
+      this.user = response.data;
+    }).catch((error) => {
+    });
+  }
 }
 </script>
 
