@@ -254,4 +254,59 @@
 			return $resp;
 		}
 
+		public function createStream($req, $resp, $args) {
+
+			//LE PROXY
+			$opts = array('http' => array('proxy'=> 'tcp://www-cache.iutnc.univ-lorraine.fr:3128', 'request_fulluri'=> true));
+			$context = stream_context_create($opts);
+
+			//RECUPERATION DES DONNEES GPS
+			$str = file_get_contents("http://ip-api.com/xml", NULL, $context); 
+			$xml = simplexml_load_string($str, 'SimpleXMLElement',LIBXML_NOCDATA);
+
+			$parsedBody = $req->getParsedBody();
+
+			$createStream = new \boniflux\common\models\Stream();
+			$createStream->nom = $parsedBody['nomStream'];
+			$createStream->description = $parsedBody['descriptionStream'];
+			//GESTION ETAT
+			//1 = Créer
+			//2 = Terminer
+			//A voir pour d'autres codes d'état
+			$createStream->etat = 1;
+			//GESTION ETAT
+			$createStream->latitude = $xml->lat;
+			$createStream->longitude = $xml->lon;
+			
+
+			try {
+				$createStream->save();
+			} catch(\Exception $e) {
+				echo $e->getmessage();
+			}
+
+			$stream = new \boniflux\common\models\Stream();
+			$stream = $stream->select("id")
+								->take(1)
+								->orderBy("id", "DESC")
+								->get();
+
+			$addUrgence = new \boniflux\common\models\Urgence();
+			$addUrgence->nom = $parsedBody['nomStream'];
+			$addUrgence->id_stream = substr($stream, 7, -2);
+
+			try {
+				$addUrgence->save();
+			} catch(\Exception $e) {
+				echo $e->getmessage();
+			}
+
+			$resp= $resp->withStatus(201);
+
+			//$tab = $messages;
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
+		}
+
 	}
