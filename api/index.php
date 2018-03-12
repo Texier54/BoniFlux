@@ -111,4 +111,11 @@ $app->post('/postvideo[/]', function (Request $req, Response $resp, $args) {
     }
 );
 
+//Créer stream
+$app->post('/createStream[/]', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->createStream($req, $resp, $args);
+    }
+);
+
 $app->run();

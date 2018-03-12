@@ -254,4 +254,64 @@
 			return $resp;
 		}
 
+		public function createStream($req, $resp, $args) {
+ 
+			//LE PROXY (a enlever si pas sur les machines de l'iut)
+			$opts = array('http' => array('proxy'=> 'tcp://www-cache.iutnc.univ-lorraine.fr:3128', 'request_fulluri'=> true));
+			$context = stream_context_create($opts);
+
+			//RECUPERATION DES DONNEES GPS
+			$str = file_get_contents("http://ip-api.com/xml", NULL, $context); 
+			$xml = simplexml_load_string($str, 'SimpleXMLElement',LIBXML_NOCDATA);
+
+			$parsedBody = $req->getParsedBody();
+
+			//Creation du stream
+			$createStream = new \boniflux\common\models\Stream();
+			$createStream->nom = $parsedBody['nomStream'];
+			$createStream->description = $parsedBody['descriptionStream'];
+			//GESTION ETAT
+			//1 = Créer
+			//2 = Terminer
+			//A voir pour d'autres codes d'état
+			$createStream->etat = 1;
+			//GESTION ETAT
+			$createStream->latitude = $xml->lat;
+			$createStream->longitude = $xml->lon;
+			
+			//Enregistrement de la creation du stream
+			try {
+				$createStream->save();
+			} catch(\Exception $e) {
+				echo $e->getmessage();
+			}
+
+			//Récupération du dernier ID ajouter dans la table stream
+			$stream = new \boniflux\common\models\Stream();
+			$stream = $stream->select("id")
+								->take(1)
+								->orderBy("id", "DESC")
+								->get();
+
+			//Ajoute dans la table urgence le dernier stream
+			//COMMENTAIRE : Peut poser problème si 2 stream sont ajouter en même temps. Il faut trouver quelque chose de plus propre
+			$addUrgence = new \boniflux\common\models\Urgence();
+			$addUrgence->nom = $parsedBody['nomStream'];
+			$addUrgence->id_stream = substr($stream, 7, -2);
+
+			//Enregistrement du stream dans le mode urgence
+			try {
+				$addUrgence->save();
+			} catch(\Exception $e) {
+				echo $e->getmessage();
+			}
+
+			$resp= $resp->withStatus(201);
+
+			//$tab = $messages;
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
+		}
+
 	}
