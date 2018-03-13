@@ -53,7 +53,7 @@ export default {
 
       if(this.visiteur == false)
       {
-        alert('Vous ne pouvez pas vous abonné en tant que visiteur');
+        alert('Vous ne pouvez pas vous abonner en tant que visiteur');
       }
       else {
         window.axios.post('abonnement',{

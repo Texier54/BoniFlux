@@ -5,10 +5,13 @@
   		<div class="columns">
 					<h2>Vos abonnements</h2>
 			</div>
-			<div class="columns">
-      		<abonnement v-if="visiteur" v-for="abonnement in abonnements" :abonnement="abonnement"></abonnement>
-					<p v-else></p>
+			<div v-if="visiteur" class="columns">
+      		<abonnement  v-for="abonnement in abonnements" :abonnement="abonnement"></abonnement>
   		</div>
+
+			<div v-else class="columns">
+				<p>Vous n'avez pas d'abonnements en tant que visiteur</p>
+			 </div>
     </section>
 	</div>
 </template>
@@ -24,14 +27,21 @@ export default {
   data () {
     return {
       abonnements: '',
+			visiteur: true,
     }
   },
 
 	mounted () {
 
 		//Verif visiteur
-		if(this.$store.state.token == visiteur)
-			visiteur = false;
+		if(this.$store.state.token == 'visiteur')
+			this.visiteur = false;
+		else {
+			window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
+				this.abonnements = response.data;
+			}).catch((error) => {
+			});
+		}
 
 		window.bus.$on('updateAbonnements',() => {
 			window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
@@ -40,10 +50,6 @@ export default {
 			});
     })
 
-		window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
-			this.abonnements = response.data;
-		}).catch((error) => {
-		});
 	}
 }
 </script>

@@ -16,7 +16,7 @@
           <i class="marker fas fa-circle" style="color: red;"></i>Démarer un Stream</router-link>-->
 
           <!-- Bouton pour modal stream -->
-          <button class="button is-link is-large is-capitalized has-text-weight-bold" @click="modalStart=true;"><i class="marker fas fa-circle" style="color: red;"></i>Démarrer le Stream</button>
+          <button class="button is-link is-large is-capitalized has-text-weight-bold" @click="openStream"><i class="marker fas fa-circle" style="color: red;"></i>Démarrer le Stream</button>
           <!-- Bouton pour modal stream -->
 
         </div>
@@ -59,7 +59,7 @@
           <footer class="modal-card-foot">
               <input type="submit" value="Connexion" class="button is-success">
               <button class="button" @click="modalCo=false; modalIn= true;">Inscription</button>
-              <a class="button" @click="visiteur">Mode Visiteur</a>
+              <a class="button" @click="modeVisiteur">Mode Visiteur</a>
           </footer>
         </form>
       </div>
@@ -169,9 +169,15 @@ export default {
       nomStream : '',
       descriptionStream : '',
       urgence : false,
+      visiteur: true,
     }
   },
   mounted() {
+
+    //Verif visiteur
+		if(this.$store.state.token == 'visiteur')
+			this.visiteur = false;
+
     if(!this.$store.state.member) {
       this.modalCo = true;
     }
@@ -220,7 +226,7 @@ export default {
         prenom : this.prenom,
         pseudo : this.pseudo,
         email : this.email,
-        password : this.password
+        password : this.password,
 
       }).then((response) => {
 
@@ -236,7 +242,13 @@ export default {
 
     },
 
+    openStream() {
+      if(this.visiteur === false) alert('Vous ne pouvez pas démarrer un stream en tant que visiteur');
+      else modalStart=true;
+    },
+
     demarrerStream() {
+
       window.axios.post('createStream',{
 
         nomStream : this.nomStream,
@@ -255,7 +267,7 @@ export default {
 
     },
 
-    visiteur() {
+    modeVisiteur() {
       this.$store.commit('setMember', 'Visiteur' );
       this.$store.commit('setToken', 'visiteur');
       this.$router.push({path: '/'});
