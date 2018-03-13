@@ -1,7 +1,6 @@
 <template>
   <div class="column is-3" style="height: 100px;">
-    <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 300%;" frameborder="0" allowfullscreen ></iframe>
-
+    <img src="http://download.seaicons.com/icons/iconsmind/outline/512/Webcam-icon.png">
     <p>{{ stream.nom }}</p>
     <strong>{{ user.pseudo }}</strong>
 
@@ -22,10 +21,11 @@ export default {
   data () {
     return {
       user: '',
+
     }
   },
   mounted() {
-    window.axios.get('user/'+this.stream).then((response) => {
+    window.axios.get('user/'+this.stream.id_user).then((response) => {
       this.user = response.data;
     }).catch((error) => {
     });

@@ -156,7 +156,7 @@ export default {
 
   data () {
     return {
-      streams: [1, 2, 3, 4, 5],
+      streams: '',
       modalCo: false,
       modalIn: false,
       modalStart: false,
