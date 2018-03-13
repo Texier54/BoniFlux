@@ -22,7 +22,7 @@
 		public function stream($req, $resp, $args) {
 
 			$stream = new \boniflux\common\models\Stream();
-			$stream = $stream->limit(5)->get();
+			$stream = $stream->limit(5)->where('etat', '=', 1)->get();
 
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
 
@@ -279,6 +279,7 @@
 			//GESTION ETAT
 			$createStream->latitude = $xml->lat;
 			$createStream->longitude = $xml->lon;
+			$createStream->id_user = $parsedBody['id_user'];
 
 			//Enregistrement de la creation du stream
 			try {

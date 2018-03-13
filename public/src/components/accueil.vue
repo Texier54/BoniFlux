@@ -240,7 +240,8 @@ export default {
 
         nomStream : this.nomStream,
         descriptionStream : this.descriptionStream,
-        urgence : this.urgence
+        urgence : this.urgence,
+        id_user: this.$store.state.member.id
 
       }).then((response) => {
 
