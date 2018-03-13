@@ -59,6 +59,7 @@
           <footer class="modal-card-foot">
               <input type="submit" value="Connexion" class="button is-success">
               <button class="button" @click="modalCo=false; modalIn= true;">Inscription</button>
+              <a class="button" @click="visiteur">Mode Visiteur</a>
           </footer>
         </form>
       </div>
@@ -252,6 +253,13 @@ export default {
         alert(error);
       });
 
+    },
+
+    visiteur() {
+      this.$store.commit('setMember', 'Visiteur' );
+      this.$store.commit('setToken', 'visiteur');
+      this.$router.push({path: '/'});
+      this.modalCo = false;
     }
 
   }
@@ -322,7 +330,12 @@ body {
   border-bottom: 1px solid black;
 }
 
-.modal-background-gray{
+.modal-background-gray {
   background-color: gray;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: absolute;
 }
 </style>

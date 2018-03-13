@@ -10,7 +10,8 @@
         <div class="column is-3">
             <h2>Chat</h2>
             <message v-for="message in messages" :message="message"></message>
-            <input @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
+            <input v-if="visiteur" @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
+            <input v-else class="input" placeholder="Vous ne pouvez pas parle en visiteur" disabled>
         </div>
       </div>
       <br>
@@ -42,6 +43,7 @@ export default {
       stream: '',
       abonnements: '',
       ifabo: true,
+      visiteur: true,
     }
   },
 
@@ -49,19 +51,24 @@ export default {
 
     abo() {
 
-      window.axios.post('abonnement',{
+      if(this.visiteur == false)
+      {
+        alert('Vous ne pouvez pas vous abonné en tant que visiteur');
+      }
+      else {
+        window.axios.post('abonnement',{
 
-        id_streamer : this.$route.params.id,
-        id_abonne : this.$store.state.member.id,
+          id_streamer : this.$route.params.id,
+          id_abonne : this.$store.state.member.id,
 
-      }).then((response) => {
+        }).then((response) => {
 
-        this.ifabo = false;
+          this.ifabo = false;
 
-      }).catch((error) => {
-        alert(error);
-      });
-
+        }).catch((error) => {
+          alert(error);
+        });
+      }
 
     },
 
@@ -92,6 +99,23 @@ export default {
   },
   mounted() {
 
+    //Verif visiteur
+    if(this.$store.state.token == 'visiteur')
+      this.visiteur = false;
+    else {
+      window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
+    		this.abonnements = response.data;
+        for(var i= 0; i < this.abonnements.length; i++)
+        {
+    		    if(this.abonnements[i].id_streamer == this.stream.id_user)
+            {
+              this.ifabo = false;
+            }
+        }
+    	}).catch((error) => {
+    	});
+    }
+
     window.axios.get('stream/'+this.$route.params.id).then((response) => {
       this.stream = response.data;
 
@@ -112,18 +136,6 @@ export default {
       this.messages = response.data;
     }).catch((error) => {
     });
-
-	window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
-		this.abonnements = response.data;
-    for(var i= 0; i < this.abonnements.length; i++)
-    {
-		    if(this.abonnements[i].id_streamer == this.stream.id_user)
-        {
-          this.ifabo = false;
-        }
-    }
-	}).catch((error) => {
-	});
 
   }
 }

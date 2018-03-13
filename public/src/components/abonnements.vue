@@ -6,7 +6,8 @@
 					<h2>Vos abonnements</h2>
 			</div>
 			<div class="columns">
-      		<abonnement v-for="abonnement in abonnements" :abonnement="abonnement"></abonnement>
+      		<abonnement v-if="visiteur" v-for="abonnement in abonnements" :abonnement="abonnement"></abonnement>
+					<p v-else></p>
   		</div>
     </section>
 	</div>
@@ -27,6 +28,10 @@ export default {
   },
 
 	mounted () {
+
+		//Verif visiteur
+		if(this.$store.state.token == visiteur)
+			visiteur = false;
 
 		window.bus.$on('updateAbonnements',() => {
 			window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
