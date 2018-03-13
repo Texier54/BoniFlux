@@ -182,6 +182,7 @@ export default {
       this.modalCo = true;
     }
     window.bus.$on('logout',() => {
+      this.$router.push({path: '/'});
       this.$store.commit('setMember', false);
       this.$store.commit('setToken', false);
       this.$router.push({path: '/'});
