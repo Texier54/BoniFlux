@@ -9,7 +9,9 @@
         </div>
         <div class="column is-3">
             <h2>Chat</h2>
-            <message v-for="message in messages" :message="message"></message>
+            <div id="messages" style="max-height: 450px; overflow: auto;">
+              <message v-for="message in messages" :message="message"></message>
+            </div>
             <input v-if="visiteur" @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
             <input v-else class="input" placeholder="Vous ne pouvez pas parle en visiteur" disabled>
         </div>
@@ -86,6 +88,10 @@ export default {
         this.editMessage = '';
         window.axios.get('messages/'+this.$route.params.id).then((response) => {
           this.messages = response.data;
+          window.setInterval(function() {
+            var elem = document.getElementById('messages');
+            elem.scrollTop = elem.scrollHeight;
+          }, 100);
         }).catch((error) => {
           alert(error);
         });
@@ -134,6 +140,10 @@ export default {
 
     window.axios.get('messages/'+this.$route.params.id).then((response) => {
       this.messages = response.data;
+      window.setInterval(function() {
+        var elem = document.getElementById('messages');
+        elem.scrollTop = elem.scrollHeight;
+      }, 500);
     }).catch((error) => {
     });
 

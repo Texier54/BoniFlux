@@ -10,7 +10,7 @@
   		</div>
 
 			<div v-else class="columns">
-				<p>Vous n'avez pas d'abonnements en tant que visiteur</p>
+				<p class="column is-12" style="text-align:center;">Vous n'avez pas d'abonnements en tant que visiteur</p>
 			 </div>
     </section>
 	</div>
