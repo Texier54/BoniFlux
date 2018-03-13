@@ -39,7 +39,7 @@
     </section>
 
     <div v-show="modalCo" class="modal is-active">
-      <div class="modal-background"></div>
+      <div class="modal-background-gray"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Connexion</p>
@@ -66,7 +66,7 @@
 
 
     <div v-show="modalIn" class="modal is-active">
-      <div class="modal-background"></div>
+      <div class="modal-background-gray"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Inscription</p>
@@ -134,7 +134,7 @@
 
           </section>
           <footer class="modal-card-foot">
-              <input type="submit" value="Lancer le stream" class="button is-success">
+              <input type="submit" value="Créer un stream" class="button is-success">
               <button class="button" @click="modalStart=false;">Annuler</button>
           </footer>
         </form>
@@ -321,7 +321,7 @@ body {
   border-bottom: 1px solid black;
 }
 
-.modal-background{
+.modal-background-gray{
   background-color: gray;
 }
 </style>
