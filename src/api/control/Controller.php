@@ -255,13 +255,14 @@
 		}
 
 		public function createStream($req, $resp, $args) {
- 
+
 			//LE PROXY (a enlever si pas sur les machines de l'iut)
+			/*
 			$opts = array('http' => array('proxy'=> 'tcp://www-cache.iutnc.univ-lorraine.fr:3128', 'request_fulluri'=> true));
-			$context = stream_context_create($opts);
+			$context = stream_context_create($opts);*/
 
 			//RECUPERATION DES DONNEES GPS
-			$str = file_get_contents("http://ip-api.com/xml", NULL, $context); 
+			$str = file_get_contents("http://ip-api.com/xml", NULL, $context);
 			$xml = simplexml_load_string($str, 'SimpleXMLElement',LIBXML_NOCDATA);
 
 			$parsedBody = $req->getParsedBody();
@@ -278,7 +279,7 @@
 			//GESTION ETAT
 			$createStream->latitude = $xml->lat;
 			$createStream->longitude = $xml->lon;
-			
+
 			//Enregistrement de la creation du stream
 			try {
 				$createStream->save();

@@ -13,7 +13,7 @@
             <input @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
         </div>
       </div>
-
+      <br>
       <div class="columns">
         <div class="column is-6">
             <div id="map" height="100px">
@@ -130,6 +130,10 @@ export default {
 </script>
 
 <style scoped>
+
+#map {
+  height: 400px;
+}
 
 h2 {
   font-size: 26px;
