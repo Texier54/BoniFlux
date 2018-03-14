@@ -22,7 +22,9 @@
 		public function stream($req, $resp, $args) {
 
 			$stream = new \boniflux\common\models\Stream();
-			$stream = $stream->limit(5)->where('etat', '=', 1)->get();
+			$stream = $stream->limit(5)
+							->where('etat', '=', 1)
+							->get();
 
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
 
@@ -297,7 +299,7 @@
 			else{
 				$createStream->publique = 0;
 			}
-			
+
 			$createStream->id_user = $parsedBody['id_user'];
 
 			//Enregistrement de la creation du stream
