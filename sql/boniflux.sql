@@ -84,6 +84,8 @@ CREATE TABLE `stream` (
   `etat` int(11) DEFAULT NULL,
   `latitude` float NOT NULL,
   `longitude` float NOT NULL,
+  `anonyme` int(1) NOT NULL,
+  `publique` int(1) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
