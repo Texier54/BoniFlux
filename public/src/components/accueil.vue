@@ -254,8 +254,7 @@ export default {
 
         nomStream : this.nomStream,
         descriptionStream : this.descriptionStream,
-        urgence : this.urgence,
-        id_user: this.$store.state.member.id
+        urgence : this.urgence
 
       }).then((response) => {
 
