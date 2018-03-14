@@ -133,6 +133,11 @@
                <input id="checkBox" type="checkbox" v-model="urgence">
               </div>
 
+              <label class="label">Stream anonyme ?</label>
+              <div class="control">
+               <input id="checkBox" type="checkbox" v-model="anonyme">
+              </div>
+
           </section>
           <footer class="modal-card-foot">
               <input type="submit" value="Créer un stream" class="button is-success">
@@ -169,6 +174,7 @@ export default {
       nomStream : '',
       descriptionStream : '',
       urgence : false,
+      anonyme : false,
       visiteur: true,
     }
   },
@@ -254,7 +260,8 @@ export default {
 
         nomStream : this.nomStream,
         descriptionStream : this.descriptionStream,
-        urgence : this.urgence
+        urgence : this.urgence,
+        anonyme : this.anonyme
 
       }).then((response) => {
 
