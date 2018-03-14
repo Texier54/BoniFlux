@@ -279,6 +279,7 @@
 			//GESTION ETAT
 			$createStream->latitude = $xml->lat;
 			$createStream->longitude = $xml->lon;
+
 			//0 = video non anonyme
 			//1 = video anonyme
 			if($parsedBody['anonyme'] == false){
@@ -287,6 +288,16 @@
 			else{
 				$createStream->anonyme = 1;
 			}
+
+			//0 = video prive
+			//1 = video publique
+			if($parsedBody['publique'] == true){
+				$createStream->publique = 1;
+			}
+			else{
+				$createStream->publique = 0;
+			}
+			
 			$createStream->id_user = $parsedBody['id_user'];
 
 			//Enregistrement de la creation du stream

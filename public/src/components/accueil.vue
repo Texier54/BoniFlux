@@ -138,6 +138,11 @@
                <input id="checkBox" type="checkbox" v-model="anonyme">
               </div>
 
+              <label class="label">Rendre la vidéo publique ? (Vous pourrez la rendre publique durant le stream)</label>
+              <div class="control">
+               <input id="checkBox" type="checkbox" v-model="publique">
+              </div>
+
           </section>
           <footer class="modal-card-foot">
               <input type="submit" value="Créer un stream" class="button is-success">
@@ -175,6 +180,7 @@ export default {
       descriptionStream : '',
       urgence : false,
       anonyme : false,
+      publique : true,
       visiteur: true,
     }
   },
@@ -261,7 +267,8 @@ export default {
         nomStream : this.nomStream,
         descriptionStream : this.descriptionStream,
         urgence : this.urgence,
-        anonyme : this.anonyme
+        anonyme : this.anonyme,
+        publique : this.publique
 
       }).then((response) => {
 
