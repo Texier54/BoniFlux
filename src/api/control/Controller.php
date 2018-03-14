@@ -24,6 +24,7 @@
 			$stream = new \boniflux\common\models\Stream();
 			$stream = $stream->limit(5)
 							->where('etat', '=', 1)
+							->where('publique', '=', 1)
 							->get();
 
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
