@@ -3,13 +3,14 @@
     <nav-bar></nav-bar>
     <section class="container">
       <div class="columns">
-        <div class="column is-8" style="height: 500px;">
+        <div class="mainvideo column is-8" style="">
           <h2>{{ stream.nom }}</h2>
-          <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>
+          <video src="/var/www/html/BoniFlux/video/test.mp4" controls="controls"></video>
+          <!--<iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>-->
         </div>
-        <div class="column is-3">
+        <div class="column is-4">
             <h2>Chat</h2>
-            <div id="messages" style="max-height: 450px; overflow: auto;">
+            <div class="listemessage" id="messages" style="max-height: 450px; overflow: auto;">
               <message v-for="message in messages" :message="message"></message>
             </div>
             <input v-if="visiteur" @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
@@ -185,7 +186,16 @@ body {
 
 .btn:hover{
   color: #363636;
+}
 
+.mainvideo{
+  border: red 1px solid;
+  margin-top: 10px;
+}
+
+.listemessage{
+    height: auto;
+    overflow: scroll;
 }
 
 </style>
