@@ -170,7 +170,7 @@ export default {
       streams: '',
       modalCo: false,
       modalIn: false,
-      modalStart: false,
+      modalStart: true,
       nom : '',
       prenom : '',
       email : '',

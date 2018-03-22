@@ -193,11 +193,6 @@ body {
   color: #363636;
 }
 
-.mainvideo{
-  border: red 1px solid;
-  
-}
-
 .listemessage{
   max-height: 400px;
   overflow: scroll;
