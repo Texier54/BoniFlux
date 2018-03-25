@@ -1,14 +1,18 @@
 <template>
 	<div>
 		<nav-bar></nav-bar>
-		<div class="columns">
-			<div class="column is-7" style="height: 500px;">
-        <a id="startButton" class="button is-link" @click="start">Start</a>
-        <a id="downloadButton" class="button is-link" @click="download">Download</a>
-				<div><video ref="video" id="video" width="640" height="480" autoplay></video></div>
-        <section class="video-clips"></section>
-      </div>
-		</div>
+		<section class="container">
+			<div class="columns">
+				<div class="column is-7" style="height: 500px;">
+					<br>
+	        <a id="startButton" class="button is-success" v-bind:class="{ 'is-warning': ifstart }" @click="start">Start</a>
+	        <a id="downloadButton" class="button is-link" @click="download">Download</a>
+					<br><br>
+					<div><video ref="video" id="video" width="640" height="480" autoplay></video></div>
+	        <section class="video-clips"></section>
+	      </div>
+			</div>
+		</section>
 	</div>
 </template>
 
@@ -25,7 +29,8 @@ export default {
       theRecorder: '',
       recordedChunks: [],
       constraints : { "video": { width: { max: 320 } }, "audio" : true },
-      clipName: ''
+      clipName: '',
+			ifstart: false,
     };
   },
 
@@ -35,6 +40,7 @@ export default {
 
   methods: {
     start() {
+			this.ifstart = true;
       navigator.mediaDevices.getUserMedia(this.constraints)
           .then(stream => {
             this.theStream = stream;
@@ -46,9 +52,9 @@ export default {
               console.error('Exception while creating MediaRecorder: ' + e);
               return;
             }
-            
+
             this.theRecorder = recorder;
-            recorder.ondataavailable = 
+            recorder.ondataavailable =
                 (event) => { this.recordedChunks.push(event.data); };
             recorder.start(100);
           })
@@ -67,7 +73,7 @@ export default {
       a.href = url;
       a.download = this.clipName + '.webm';
       a.click();
-      setTimeout(function() { URL.revokeObjectURL(url); }, 100); 
+      setTimeout(function() { URL.revokeObjectURL(url); }, 100);
     }
   }
 };
