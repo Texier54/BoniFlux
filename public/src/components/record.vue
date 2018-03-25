@@ -62,9 +62,9 @@ export default {
     },
     download() {
       this.theRecorder.stop();
-      this.clipName = prompt('Le nom de l\'enregistrement')
+      
       this.theStream.getTracks().forEach(track => { track.stop(); });
-
+      this.clipName = prompt('Le nom de l\'enregistrement')
       let blob = new Blob(this.recordedChunks, {type: "video/webm"});
       let url =  URL.createObjectURL(blob);
       let a = document.createElement("a");
