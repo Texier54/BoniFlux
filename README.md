@@ -1,4 +1,4 @@
-# BoniFlux
+﻿# BoniFlux
 
 BoniFlux est un site permettant le streaming de sa Webcam à plusieurs personnes. Vous pouvez vous connecter, chater, streamer, vous abonner à des streamer et venir regarder des streams sans compte utilisateurs.
 
