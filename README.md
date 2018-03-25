@@ -29,7 +29,7 @@ BoniFlux est un site permettant le streaming de sa Webcam à plusieurs personnes
 * **Baptiste Texier** - *Lancement* - [Github](https://github.com/texier54)
 * [Charles Montrouge](https://github.com/Charles974)
 * [Jordan Sautron](https://github.com/Voytsu)
-* [Daniel](https://github.com/DanielRicklin)
+* [Daniel Ricklin](https://github.com/DanielRicklin)
 
 ## License
 
