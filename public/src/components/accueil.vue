@@ -147,7 +147,7 @@
           </section>
           <footer class="modal-card-foot">
               <input type="submit" value="Créer un stream" class="button is-success">
-              <button class="button">Annuler</button>
+              <button class="button" @click="modalStart=false;">Annuler</button>
           </footer>
         </form>
       </div>
