@@ -21,9 +21,6 @@ export default {
   data() {
     return {
       video: {},
-      canvas: {},
-      captures: [],
-      intervalProgress: "",
       theStream: '',
       theRecorder: '',
       recordedChunks: [],
