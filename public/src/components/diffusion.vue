@@ -2,26 +2,32 @@
   <div>
     <nav-bar></nav-bar>
     <section class="container">
-      <div class="columns">
-        <div class="column is-8" style="height: 500px;">
+      <div class="columns main">
+        <div class="mainvideo column is-8" style="">
           <h2>{{ stream.nom }}</h2>
-          <iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>
+          <video src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" controls="controls"></video>
+          <!--<iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>-->
         </div>
-        <div class="column is-3">
+        <div class="column is-4">
             <h2>Chat</h2>
-            <message v-for="message in messages" :message="message"></message>
-            <input @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
+            <div class="listemessage" id="messages">
+              <message v-for="message in messages" :message="message" :key="message.id"></message>
+            </div>
+            <input v-if="visiteur" @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
+            <input v-else class="input" placeholder="Vous ne pouvez pas parle en visiteur" disabled>
         </div>
       </div>
-
-      <div class="columns">
-        <div class="column is-6">
-            <div id="map" height="100px">
+      <div class="">
+        <div class="btnAbo">
+            <a class="button is-link" v-show="ifabo" @click="abo">S'abonner</a>
+            <a class="button is-danger" v-show="!ifabo">Se désabonner</a>
+          </div>
+      </div>
+        <div class="">
+            <div id="map">
             </div>
         </div>
-        <a class="button is-link" v-show="ifabo" @click="abo">S'abonner</a>
-	      <a class="button is-danger" v-show="!ifabo">Se désabonner</a>
-      </div>
+        
     </section>
   </div>
 </template>
@@ -42,6 +48,7 @@ export default {
       stream: '',
       abonnements: '',
       ifabo: true,
+      visiteur: true,
     }
   },
 
@@ -49,19 +56,24 @@ export default {
 
     abo() {
 
-      window.axios.post('abonnement',{
+      if(this.visiteur == false)
+      {
+        alert('Vous ne pouvez pas vous abonner en tant que visiteur');
+      }
+      else {
+        window.axios.post('abonnement',{
 
-        id_streamer : this.$route.params.id,
-        id_abonne : this.$store.state.member.id,
+          id_streamer : this.$route.params.id,
+          id_abonne : this.$store.state.member.id,
 
-      }).then((response) => {
+        }).then((response) => {
 
-        this.ifabo = false;
+          this.ifabo = false;
 
-      }).catch((error) => {
-        alert(error);
-      });
-
+        }).catch((error) => {
+          alert(error);
+        });
+      }
 
     },
 
@@ -79,6 +91,10 @@ export default {
         this.editMessage = '';
         window.axios.get('messages/'+this.$route.params.id).then((response) => {
           this.messages = response.data;
+          window.setInterval(function() {
+            var elem = document.getElementById('messages');
+            elem.scrollTop = elem.scrollHeight;
+          }, 100);
         }).catch((error) => {
           alert(error);
         });
@@ -88,9 +104,26 @@ export default {
       });
 
 
-    },
+    }
   },
   mounted() {
+
+    //Verif visiteur
+    if(this.$store.state.token == 'visiteur')
+      this.visiteur = false;
+    else {
+      window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
+    		this.abonnements = response.data;
+        for(var i= 0; i < this.abonnements.length; i++)
+        {
+    		    if(this.abonnements[i].id_streamer == this.stream.id_user)
+            {
+              this.ifabo = false;
+            }
+        }
+    	}).catch((error) => {
+    	});
+    }
 
     window.axios.get('stream/'+this.$route.params.id).then((response) => {
       this.stream = response.data;
@@ -100,7 +133,7 @@ export default {
         zoom: 12,
         });
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: 'GeoQuizz',
+            attribution: 'Boniflux',
             minZoom: 1,
             maxZoom: 16
         }).addTo(this.map);
@@ -110,26 +143,25 @@ export default {
 
     window.axios.get('messages/'+this.$route.params.id).then((response) => {
       this.messages = response.data;
+      window.setInterval(function() {
+        var elem = document.getElementById('messages');
+        elem.scrollTop = elem.scrollHeight;
+      }, 500);
     }).catch((error) => {
     });
-
-	window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
-		this.abonnements = response.data;
-    for(var i= 0; i < this.abonnements.length; i++)
-    {
-		    if(this.abonnements[i].id_streamer == this.stream.id_user)
-        {
-          this.ifabo = false;
-        }
-    }
-	}).catch((error) => {
-	});
 
   }
 }
 </script>
 
 <style scoped>
+
+.container{
+}
+
+#map {
+  height: 400px;
+}
 
 h2 {
   font-size: 26px;
@@ -159,7 +191,19 @@ body {
 
 .btn:hover{
   color: #363636;
+}
 
+.listemessage{
+  max-height: 400px;
+  overflow: scroll;
+}
+
+.btnAbo{
+  margin: 10px;   
+}
+
+.main{
+  margin-top: 30px;
 }
 
 </style>

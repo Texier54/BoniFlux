@@ -22,7 +22,10 @@
 		public function stream($req, $resp, $args) {
 
 			$stream = new \boniflux\common\models\Stream();
-			$stream = $stream->limit(5)->get();
+			$stream = $stream->limit(5)
+							->where('etat', '=', 1)
+							->where('publique', '=', 1)
+							->get();
 
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
 
@@ -122,7 +125,7 @@
 		public function getmessage($req, $resp, $args) {
 
 			$messages = new \boniflux\common\models\Message();
-			$messages = $messages->where('id_stream', '=', $args['id'])->limit(10)->get();
+			$messages = $messages->where('id_stream', '=', $args['id'])->limit(30)->get();
 
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
 
@@ -255,13 +258,14 @@
 		}
 
 		public function createStream($req, $resp, $args) {
- 
+
 			//LE PROXY (a enlever si pas sur les machines de l'iut)
+			
 			$opts = array('http' => array('proxy'=> 'tcp://www-cache.iutnc.univ-lorraine.fr:3128', 'request_fulluri'=> true));
 			$context = stream_context_create($opts);
 
 			//RECUPERATION DES DONNEES GPS
-			$str = file_get_contents("http://ip-api.com/xml", NULL, $context); 
+			$str = file_get_contents("http://ip-api.com/xml", NULL, $context);
 			$xml = simplexml_load_string($str, 'SimpleXMLElement',LIBXML_NOCDATA);
 
 			$parsedBody = $req->getParsedBody();
@@ -278,7 +282,27 @@
 			//GESTION ETAT
 			$createStream->latitude = $xml->lat;
 			$createStream->longitude = $xml->lon;
-			
+
+			//0 = video non anonyme
+			//1 = video anonyme
+			if($parsedBody['anonyme'] == false){
+				$createStream->anonyme = 0;
+			}
+			else{
+				$createStream->anonyme = 1;
+			}
+
+			//0 = video prive
+			//1 = video publique
+			if($parsedBody['publique'] == true){
+				$createStream->publique = 1;
+			}
+			else{
+				$createStream->publique = 0;
+			}
+
+			$createStream->id_user = $parsedBody['id_user'];
+
 			//Enregistrement de la creation du stream
 			try {
 				$createStream->save();
@@ -286,24 +310,26 @@
 				echo $e->getmessage();
 			}
 
-			//Récupération du dernier ID ajouter dans la table stream
-			$stream = new \boniflux\common\models\Stream();
-			$stream = $stream->select("id")
-								->take(1)
-								->orderBy("id", "DESC")
-								->get();
+			if($parsedBody['urgence'] == true){
+				//Récupération du dernier ID ajouter dans la table stream
+				$stream = new \boniflux\common\models\Stream();
+				$stream = $stream->select("id")
+									->take(1)
+									->orderBy("id", "DESC")
+									->get();
 
-			//Ajoute dans la table urgence le dernier stream
-			//COMMENTAIRE : Peut poser problème si 2 stream sont ajouter en même temps. Il faut trouver quelque chose de plus propre
-			$addUrgence = new \boniflux\common\models\Urgence();
-			$addUrgence->nom = $parsedBody['nomStream'];
-			$addUrgence->id_stream = substr($stream, 7, -2);
+				//Ajoute dans la table urgence le dernier stream
+				//COMMENTAIRE : Peut poser problème si 2 stream sont ajouter en même temps. Il faut trouver quelque chose de plus propre
+				$addUrgence = new \boniflux\common\models\Urgence();
+				$addUrgence->nom = $parsedBody['nomStream'];
+				$addUrgence->id_stream = substr($stream, 7, -2);
 
-			//Enregistrement du stream dans le mode urgence
-			try {
-				$addUrgence->save();
-			} catch(\Exception $e) {
-				echo $e->getmessage();
+				//Enregistrement du stream dans le mode urgence
+				try {
+					$addUrgence->save();
+				} catch(\Exception $e) {
+					echo $e->getmessage();
+				}
 			}
 
 			$resp= $resp->withStatus(201);

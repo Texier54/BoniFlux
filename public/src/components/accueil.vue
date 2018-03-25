@@ -16,8 +16,9 @@
           <i class="marker fas fa-circle" style="color: red;"></i>Démarer un Stream</router-link>-->
 
           <!-- Bouton pour modal stream -->
-          <button class="button is-link is-large is-capitalized has-text-weight-bold" @click="modalStart=true;"><i class="marker fas fa-circle" style="color: red;"></i>Démarrer le Stream</button>
+          <button class="button is-link is-large is-capitalized has-text-weight-bold" @click="openStream"><i class="marker fas fa-circle" style="color: red;"></i>Démarrer le Stream</button>
           <!-- Bouton pour modal stream -->
+          <router-link :to="{name:'record'}" class="button is-link is-large is-capitalized has-text-weight-bold"><i class="marker fas fa-circle" style="color: red;"></i>Record</router-link>
 
         </div>
       </nav>
@@ -33,13 +34,13 @@
       <div class="end"></div>
 
       <div class="columns">
-        <listeStream v-for="stream in streams" :stream="stream"></listeStream>
+        <listeStream v-for="stream in streams" :stream="stream" :key="stream.id"></listeStream>
       </div>
 
     </section>
 
     <div v-show="modalCo" class="modal is-active">
-      <div class="modal-background"></div>
+      <div class="modal-background-gray"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Connexion</p>
@@ -59,6 +60,7 @@
           <footer class="modal-card-foot">
               <input type="submit" value="Connexion" class="button is-success">
               <button class="button" @click="modalCo=false; modalIn= true;">Inscription</button>
+              <a class="button" @click="modeVisiteur">Mode Visiteur</a>
           </footer>
         </form>
       </div>
@@ -66,7 +68,7 @@
 
 
     <div v-show="modalIn" class="modal is-active">
-      <div class="modal-background"></div>
+      <div class="modal-background-gray"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Inscription</p>
@@ -132,10 +134,20 @@
                <input id="checkBox" type="checkbox" v-model="urgence">
               </div>
 
+              <label class="label">Stream anonyme ?</label>
+              <div class="control">
+               <input id="checkBox" type="checkbox" v-model="anonyme">
+              </div>
+
+              <label class="label">Rendre la vidéo publique ? (Vous pourrez la rendre publique durant le stream)</label>
+              <div class="control">
+               <input id="checkBox" type="checkbox" v-model="publique">
+              </div>
+
           </section>
           <footer class="modal-card-foot">
-              <input type="submit" value="Lancer le stream" class="button is-success">
-              <button class="button" @click="modalStart=false;">Annuler</button>
+              <input type="submit" value="Créer un stream" class="button is-success">
+              <button class="button">Annuler</button>
           </footer>
         </form>
       </div>
@@ -156,7 +168,7 @@ export default {
 
   data () {
     return {
-      streams: [1, 2, 3, 4, 5],
+      streams: '',
       modalCo: false,
       modalIn: false,
       modalStart: false,
@@ -168,13 +180,22 @@ export default {
       nomStream : '',
       descriptionStream : '',
       urgence : false,
+      anonyme : false,
+      publique : true,
+      visiteur: true,
     }
   },
   mounted() {
+
+    //Verif visiteur
+		if(this.$store.state.token == 'visiteur')
+			this.visiteur = false;
+
     if(!this.$store.state.member) {
       this.modalCo = true;
     }
     window.bus.$on('logout',() => {
+      this.$router.push({path: '/'});
       this.$store.commit('setMember', false);
       this.$store.commit('setToken', false);
       this.$router.push({path: '/'});
@@ -219,7 +240,7 @@ export default {
         prenom : this.prenom,
         pseudo : this.pseudo,
         email : this.email,
-        password : this.password
+        password : this.password,
 
       }).then((response) => {
 
@@ -235,12 +256,20 @@ export default {
 
     },
 
+    openStream() {
+      if(this.visiteur === false) alert('Vous ne pouvez pas démarrer un stream en tant que visiteur');
+      else this.modalStart=true;
+    },
+
     demarrerStream() {
+
       window.axios.post('createStream',{
 
         nomStream : this.nomStream,
         descriptionStream : this.descriptionStream,
-        urgence : this.urgence
+        urgence : this.urgence,
+        anonyme : this.anonyme,
+        publique : this.publique
 
       }).then((response) => {
 
@@ -251,6 +280,13 @@ export default {
         alert(error);
       });
 
+    },
+
+    modeVisiteur() {
+      this.$store.commit('setMember', 'Visiteur' );
+      this.$store.commit('setToken', 'visiteur');
+      this.$router.push({path: '/'});
+      this.modalCo = false;
     }
 
   }
@@ -321,7 +357,12 @@ body {
   border-bottom: 1px solid black;
 }
 
-.modal-background{
+.modal-background-gray {
   background-color: gray;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: absolute;
 }
 </style>

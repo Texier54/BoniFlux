@@ -34,7 +34,7 @@ CREATE TABLE `abonnement` (
   `id_abonne` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -84,6 +84,8 @@ CREATE TABLE `stream` (
   `etat` int(11) DEFAULT NULL,
   `latitude` float NOT NULL,
   `longitude` float NOT NULL,
+  `anonyme` int(1) NOT NULL,
+  `publique` int(1) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
@@ -95,7 +97,7 @@ CREATE TABLE `stream` (
 -- Déchargement des données de la table `stream`
 --
 
-INSERT INTO `stream` (`id`, `nom`, `description`, `etat`, `latitude`, `longitude`, `created_at`, `update_at`, `deleted_at`, `id_user`, `id_urgence`) VALUES
+INSERT INTO `stream` (`id`, `nom`, `description`, `etat`, `latitude`, `longitude`, `created_at`, `updated_at`, `deleted_at`, `id_user`, `id_urgence`) VALUES
 (1, 'Le jeu', 'qzqfzx zd ef ef e dee ', 1, 48.5, 6, NULL, NULL, NULL, 1, NULL),
 (2, 'Le Stream', 'qz q lorem ipsd ud biuzbh qizbd iuz qlzh ouzhd ', 1, 48, 6, NULL, NULL, NULL, 1, NULL);
 
@@ -136,7 +138,7 @@ CREATE TABLE `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `nom`, `prenom`, `pseudo`, `email`, `password`, `created_at`, `update_at`, `deleted`) VALUES
+INSERT INTO `user` (`id`, `nom`, `prenom`, `pseudo`, `email`, `password`, `created_at`, `updated_at`, `deleted`) VALUES
 (1, 'test', 'test', 'test', 'test', '$2y$10$RauIFfY5p.E997L2m1vv6eFr4YC9xF6p6vtdDb8Vc09IKCuc2oFXW', NULL, NULL, NULL),
 (2, 'Google', 'Google', 'Google', 'test@google.com', '$2y$10$RauIFfY5p.E997L2m1vv6eFr4YC9xF6p6vtdDb8Vc09IKCuc2oFXW', NULL, NULL, NULL),
 (3, 'ty', 'ty', 'yt', 'yt@google.fr', '$2y$10$RauIFfY5p.E997L2m1vv6eFr4YC9xF6p6vtdDb8Vc09IKCuc2oFXW', NULL, NULL, NULL),

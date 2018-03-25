@@ -1,1 +1,17 @@
-connexion inscription en partie bon T.
+Afficher tous les streams en cours
+Voyant stream dans les abonnements
+--BAPTISTE
+
+Re faire la structure responsive émission et diffusion (FAIT)
+--CHARLES
+
+Le stream lui même
+--DANIEL
+
+Mise a jour du CMS + docs (FAIT)
+--JORDAN
+
+Bouton pour arreter le stream
+Ajout des boutons pendant le stream pour le mettre a jour dans la bdd (anonyme, privée/publique, ...)
+
+
