@@ -5,6 +5,7 @@ import emission from '@/components/emission.vue'
 import diffusion from '@/components/diffusion.vue'
 import abonnements from '@/components/abonnements.vue'
 import record from '@/components/record.vue'
+import streams from '@/components/streams.vue'
 
 Vue.use(Router)
 
@@ -19,6 +20,7 @@ export default new Router({
     { path: '/diffusion/:id', name: 'diffusion', component: diffusion},
     { path: '/abonnements', name: 'abonnements', component: abonnements},
     { path: '/record', name: 'record', component: record},
+    { path: '/streams', name: 'streams', component: streams},
     { path: '*', component: accueil}
   ]
 })

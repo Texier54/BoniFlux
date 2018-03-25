@@ -39,6 +39,25 @@
 		}
 
 
+		public function streamall($req, $resp, $args) {
+
+			$stream = new \boniflux\common\models\Stream();
+			$stream = $stream
+							->where('etat', '=', 1)
+							->where('publique', '=', 1)
+							->get();
+
+			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
+
+			$resp= $resp->withStatus(201);
+
+			$tab = $stream;
+
+			$resp->getBody()->write(json_encode($tab));
+			return $resp;
+
+		}
+
 		public function getstream($req, $resp, $args) {
 
 			$stream = new \boniflux\common\models\Stream();
@@ -260,7 +279,7 @@
 		public function createStream($req, $resp, $args) {
 
 			//LE PROXY (a enlever si pas sur les machines de l'iut)
-			
+
 			$opts = array('http' => array('proxy'=> 'tcp://www-cache.iutnc.univ-lorraine.fr:3128', 'request_fulluri'=> true));
 			$context = stream_context_create($opts);
 

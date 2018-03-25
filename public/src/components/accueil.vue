@@ -37,6 +37,12 @@
         <listeStream v-for="stream in streams" :stream="stream" :key="stream.id"></listeStream>
       </div>
 
+      <div class="columns">
+        <div class="column is-3" style="margin-right: 20px;">
+          <router-link v-show="this.$route.path !=='/abonnements'" class="nav btn button is-success is-medium " :to="{ name:'streams', params : {} }"><i class="marker fas fa-plus-circle"></i>Plus</router-link>
+        </div>
+      </div>
+
     </section>
 
     <div v-show="modalCo" class="modal is-active">
