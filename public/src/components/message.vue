@@ -9,12 +9,11 @@ export default {
   name: 'message',
   data () {
     return {
-
       user: '',
     }
   },
   mounted() {
-    window.axios.get('user/'+this.message.id_stream).then((response) => {
+    window.axios.get('user/'+this.message.id_user).then((response) => {
       this.user = response.data;
     }).catch((error) => {
     });

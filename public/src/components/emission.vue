@@ -4,8 +4,7 @@
 		<section class="container">
 		<div class="columns">
 			<div class="column is-8">
-    		<a class="btn button is-link" @click="démarer">Démarer</a>
-				<!--<h1>Retour</h1>-->
+    		<a class="btn button is-link" @click="demarrer">Démarer</a>
 				<div>
 					<video class="video" ref="video" id="video" autoplay></video>
 				</div>
@@ -41,13 +40,13 @@ export default {
   components: {NavBar},
   data () {
     return {
-			video: {},
-			canvas: {},
-			captures: [],
-			intervalProgress: '',
-			messages: '',
-			editMessage: '',
-			visiteur: false
+		video: {},
+		canvas: {},
+		captures: [],
+		intervalProgress: '',
+		messages: '',
+		editMessage: '',
+		visiteur: false
     }
   },
 
@@ -77,36 +76,11 @@ export default {
 	    },
 
 		demarrer() {
-			console.log("Je stream c'est ouf")
+			console.log("Je stream")
 		},
 		saveMess() {
-
-
-      // window.axios.post('messages/'+this.$route.params.id,{
-
-      //   message : this.editMessage,
-      //   id_stream : this.$route.params.id,
-      //   id_user : this.$store.state.member.id,
-
-      // }).then((response) => {
-
-      //   this.editMessage = '';
-      //   window.axios.get('messages/'+this.$route.params.id).then((response) => {
-      //     this.messages = response.data;
-      //     window.setInterval(function() {
-      //       var elem = document.getElementById('messages');
-      //       elem.scrollTop = elem.scrollHeight;
-      //     }, 100);
-      //   }).catch((error) => {
-      //     alert(error);
-      //   });
-
-      // }).catch((error) => {
-      //   alert(error);
-      // });
 			alert('Not Working')
-
-    }
+    	}
 	}
 }
 </script>
