@@ -27,7 +27,7 @@
             <div id="map">
             </div>
         </div>
-        
+
     </section>
   </div>
 </template>
@@ -63,7 +63,7 @@ export default {
       else {
         window.axios.post('abonnement',{
 
-          id_streamer : this.$route.params.id,
+          id_streamer : this.stream.id_user,
           id_abonne : this.$store.state.member.id,
 
         }).then((response) => {
@@ -199,7 +199,7 @@ body {
 }
 
 .btnAbo{
-  margin: 10px;   
+  margin: 10px;
 }
 
 .main{
