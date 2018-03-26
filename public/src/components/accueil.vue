@@ -33,14 +33,17 @@
 
       <div class="end"></div>
 
-      <div class="columns">
-        <listeStream v-for="stream in streams" :stream="stream" :key="stream.id"></listeStream>
-      </div>
 
       <div class="columns">
-        <div class="column is-3" style="margin-right: 20px;">
-          <router-link v-show="this.$route.path !=='/abonnements'" class="nav btn button is-success is-medium " :to="{ name:'streams', params : {} }"><i class="marker fas fa-plus-circle"></i>Plus</router-link>
+        <listeStream v-for="stream in streams" :stream="stream" :key="stream.id"></listeStream>
+        <div class="column is-2">
+          <router-link v-show="this.$route.path !=='/abonnements'" class="nav btn button is-success is-medium btnPLus" :to="{ name:'streams', params : {} }"><i class="marker fas fa-plus-circle"></i>Plus</router-link>
         </div>
+      </div>
+
+
+      <div class="columns">
+        
       </div>
 
     </section>
@@ -370,5 +373,10 @@ body {
   right: 0;
   top: 0;
   position: absolute;
+}
+
+.btnPLus{
+  top: 33%;
+  margin-left: 33%;
 }
 </style>

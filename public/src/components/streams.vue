@@ -2,10 +2,10 @@
 	<div>
 		<nav-bar></nav-bar>
     <section>
-  		<div class="columns">
-					<h2>Liste des streams en cours</h2>
-			</div>
-			<div class="columns">
+  		<div class="is-size-1">
+			<h2>Liste des streams en cours</h2>
+		</div>
+		<div class="columns">
       		<stream  v-for="stream in abonnements" :stream="stream" :key="stream.id"></stream>
   		</div>
     </section>
@@ -44,7 +44,17 @@ h2 {
 	margin-top: 15px;
 	font-size: 24px;
 }
-.columns {
-	margin-left: 20px;
+
+.Timg{
+  width:50%;
+  margin-left: 25%;
+}
+
+.marker{
+  margin-right: 10px;
+}
+
+.contentStream{
+  text-align: center;
 }
 </style>

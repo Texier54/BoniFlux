@@ -12,8 +12,8 @@
     </div>
     <div class="navbar-menu" id="navMenu">
       <div class="navbar-end">
-        <router-link v-show="this.$route.path !=='/abonnements'" class="nav btn button is-success is-medium " :to="{ name:'abonnements', params : {} }"><i class="marker fas fa-folder-open "></i>Abonnement</router-link>
-        <button class="nav btn button is-danger is-medium" @click="logOut">Deconnexion</button>
+        <router-link v-show="this.$route.path !=='/abonnements'" class="nav btn button is-success is-medium has-text-weight-semibold" :to="{ name:'abonnements', params : {} }"><i class="marker fas fa-folder-open "></i>Abonnement</router-link>
+        <button class="nav btn button is-danger is-medium has-text-weight-semibold" @click="logOut"><i class="fas fa-power-off"></i>Deconnexion</button>
       </div>
     </div>
 

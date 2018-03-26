@@ -3,8 +3,8 @@
     <nav-bar></nav-bar>
     <section class="container">
       <div class="columns main">
-        <div class="mainvideo column is-8" style="">
-          <h2>{{ stream.nom }}</h2>
+        <div class="mainvideo column is-8">
+          <h2 class="is-size-1">{{ stream.nom }}</h2>
           <video src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" controls="controls"></video>
           <!--<iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>-->
         </div>
@@ -19,8 +19,8 @@
       </div>
       <div class="">
         <div class="btnAbo">
-            <a class="button is-link" v-show="ifabo" @click="abo">S'abonner</a>
-            <a class="button is-danger" v-show="!ifabo">Se désabonner</a>
+            <a class="button is-link has-text-weight-semibold" v-show="ifabo" @click="abo">S'abonner</a>
+            <a class="button is-danger has-text-weight-semibold" v-show="!ifabo">Se désabonner</a>
           </div>
       </div>
         <div class="">
