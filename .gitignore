@@ -3,4 +3,4 @@
 src/conf/boniflux.db.conf.ini
 /doc/
 /video/
-uploads/*
+!uploads/*
