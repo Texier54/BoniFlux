@@ -1,10 +1,10 @@
 <template>
   <div class="column is-4">
-		<strong>{{ user.pseudo }}</strong><br>
-
-    <router-link class="button is-success" :to="{ name:'diffusion', params : { id : 1} }">Profil</router-link>
-
-    <a class="button" @click="desabonner">Désabonner</a>
+    <strong>{{ user.pseudo }}</strong><br>
+    <div class="pseudo">
+      <router-link class="button is-success has-text-weight-semibold" :to="{ name:'diffusion', params : { id : 1} }">Profil</router-link>
+      <a class="button has-text-weight-semibold" @click="desabonner">Désabonner</a>
+    </div>
 	</div>
 </template>
 
@@ -46,5 +46,9 @@ export default {
 </script>
 
 <style scoped>
+
+.pseudo{
+  margin-top: 8px;
+}
 
 </style>

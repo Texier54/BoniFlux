@@ -2,7 +2,7 @@
 	<div>
 		<nav-bar></nav-bar>
     <section>
-  		<div class="titre">
+  		<div class="is-size-1">
 			<h2>Liste des streams en cours</h2>
 		</div>
 		<div class="columns">
@@ -56,10 +56,5 @@ h2 {
 
 .contentStream{
   text-align: center;
-}
-
-.titre{
-	margin-left: 8px;
-	margin-bottom:8px;
 }
 </style>
