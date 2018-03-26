@@ -12,13 +12,16 @@
 	        <section class="video-clips"></section>
 	      </div>
         <div>
-          <p>
-            <label>Add file:</label><br/>
+					<div class="columns">
+						<div class="column is-7">
+						<br>
+            <label>Add file:</label><br>
             <input type="text" name="title" v-model="title" placeholder="Titre de la vidéo">
             <textarea v-model="description"></textarea>
             <input type="file" name="video" ref="file" @change="handleFileUpload"/>
             <button @click="postvideo">submit</button>
-          </p>
+					</div>
+				</div>
         </div>
 			</div>
 		</section>
@@ -74,7 +77,7 @@ export default {
     },
     download() {
       this.theRecorder.stop();
-      
+
       this.theStream.getTracks().forEach(track => { track.stop(); });
       this.clipName = prompt('Le nom de l\'enregistrement')
       let blob = new Blob(this.recordedChunks, {type: "video/webm"});
