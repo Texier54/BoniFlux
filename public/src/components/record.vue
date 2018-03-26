@@ -12,14 +12,13 @@
 	        <section class="video-clips"></section>
 	      </div>
         <div>
-          <form method="post" enctype="multipart/form-data" action="http://localhost/Boniflux/api/index.php/postvideo">
-            <p>
-              <label>Add file:</label><br/>
-              <input type="text" name="title" placeholder="Titre de la vidéo">
-              <input type="file" name="video"/>
-              <button type="submit">submit</button>
-            </p>
-          </form>
+          <p>
+            <label>Add file:</label><br/>
+            <input type="text" name="title" v-model="title" placeholder="Titre de la vidéo">
+            <textarea v-model="description"></textarea>
+            <input type="file" name="video" ref="file" @change="handleFileUpload"/>
+            <button @click="postvideo">submit</button>
+          </p>
         </div>
 			</div>
 		</section>
@@ -30,7 +29,7 @@
 import NavBar from "./navBar.vue";
 
 export default {
-  name: "emission",
+  name: "record",
   components: { NavBar },
   data() {
     return {
@@ -40,7 +39,10 @@ export default {
       recordedChunks: [],
       constraints : { "video": { width: { max: 320 } }, "audio" : true },
       clipName: '',
-			ifstart: false,
+      ifstart: false,
+      file: '',
+      title: '',
+      description: ''
     };
   },
 
@@ -85,12 +87,31 @@ export default {
       a.click();
       setTimeout(function() { URL.revokeObjectURL(url); }, 100);
     },
-    postvideo() {
-      window.axios.post('postvideo/').then((response) => {
-				console.log(res.data)
-			}).catch((e) => {
-        console.error(e)
-			});
+    postvideo(e) {
+      let formData = new FormData()
+      formData.append('video', this.file)
+      formData.append('title', this.title)
+      formData.append('description', this.description)
+      formData.append('id_user', this.$store.state.member.id)
+      window.axios.post( 'postvideo/',
+        formData,
+          {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+        }
+      ).then(function(){
+          alert('La video à bien été upload')
+      })
+      .catch(function(){
+        alert('Une erreur est survenu')
+      })
+      this.title = ""
+      this.$refs.file = ""
+      this.file = ""
+    },
+    handleFileUpload(){
+      this.file = this.$refs.file.files[0];
     }
   }
 };

@@ -270,10 +270,19 @@
 				$parsedBody = $req->getParsedBody();
 				$uploadedFiles = $req->getUploadedFiles();
 
+				$video = new \boniflux\common\models\Video();
+
 				$uploadedFile = $uploadedFiles['video'];
 				if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
 					$filename = $this->moveUploadedFile($directory, $uploadedFile, $parsedBody['title']);
-					$tab=['uploaded' => 1];
+
+					$video->nom = $parsedBody['title'];
+					$video->description = $parsedBody['description'];
+					$video->filename = $filename;
+					$video->id_user = $parsedBody['id_user'];
+					$video->save();
+
+					$tab=['nom' => $parsedBody['title'],'description' => $parsedBody['description'],'filename' => $filename,];
 					$resp->getBody()->write(json_encode($tab));
 					return $resp;
 				}
@@ -281,19 +290,23 @@
 				$tab=['uploaded' => 0];
 				$resp->getBody()->write(json_encode($tab));
 				return $resp;
-			}
-			
-
-			
+			}			
 		}
 
 		private function moveUploadedFile($directory, UploadedFile $uploadedFile, $title){
 
 			$extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-			//$basename = bin2hex(random_bytes(8));
-			$filename = sprintf('%s.%0.8s', $title, $extension);
+			$basename = bin2hex(random_bytes(8));
+			$filename = sprintf('%s.%0.8s', $basename, $extension);
 			$uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 			return $filename;
+		}
+
+		public function getvideo($req, $resp, $args){
+			$video = new \boniflux\common\models\Video();
+			$videos = $video->all();
+			$resp->getBody()->write(json_encode($videos));
+			return $resp;
 		}
 
 		public function createStream($req, $resp, $args) {

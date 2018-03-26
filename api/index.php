@@ -110,10 +110,17 @@ $app->get('/user/{id}[/]', function (Request $req, Response $resp, $args) {
     }
 );
 
-//Get User
+//Post video
 $app->post('/postvideo[/]', function (Request $req, Response $resp, $args) {
     $c = new boniflux\api\control\Controller($this);
     return $c->postvideo($req, $resp, $args);
+    }
+);
+
+//Get videos
+$app->get('/video[/]', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->getvideo($req, $resp, $args);
     }
 );
 

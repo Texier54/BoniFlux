@@ -6,6 +6,7 @@ import diffusion from '@/components/diffusion.vue'
 import abonnements from '@/components/abonnements.vue'
 import record from '@/components/record.vue'
 import streams from '@/components/streams.vue'
+import video from '@/components/video.vue'
 
 Vue.use(Router)
 
@@ -21,6 +22,7 @@ export default new Router({
     { path: '/abonnements', name: 'abonnements', component: abonnements},
     { path: '/record', name: 'record', component: record},
     { path: '/streams', name: 'streams', component: streams},
+    { path: '/video', name: 'video', component: video},
     { path: '*', component: accueil}
   ]
 })
