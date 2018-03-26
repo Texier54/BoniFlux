@@ -4,6 +4,7 @@
 
 	use \Psr\Http\Message\ServerRequestInterface as Request;
 	use \Psr\Http\Message\ResponseInterface as Response;
+	use Slim\Http\UploadedFile;
 	use illuminate\database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 
 	use Ramsey\Uuid\Uuid;
@@ -263,17 +264,36 @@
 
 		public function postvideo($req, $resp, $args) {
 
-			$parsedBody = $req->getParsedBody();
+			$directory = "../uploads";
 
+			try{
+				$parsedBody = $req->getParsedBody();
+				$uploadedFiles = $req->getUploadedFiles();
 
-			$resp= $resp->withStatus(201);
+				$uploadedFile = $uploadedFiles['video'];
+				if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+					$filename = $this->moveUploadedFile($directory, $uploadedFile, $parsedBody['title']);
+					$tab=['uploaded' => 1];
+					$resp->getBody()->write(json_encode($tab));
+					return $resp;
+				}
+			}catch(\Exception $e){
+				$tab=['uploaded' => 0];
+				$resp->getBody()->write(json_encode($tab));
+				return $resp;
+			}
+			
 
+			
+		}
 
+		private function moveUploadedFile($directory, UploadedFile $uploadedFile, $title){
 
-			$tab = $parsedBody['image'];
-
-			$resp->getBody()->write(json_encode($tab));
-			return $resp;
+			$extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+			//$basename = bin2hex(random_bytes(8));
+			$filename = sprintf('%s.%0.8s', $title, $extension);
+			$uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+			return $filename;
 		}
 
 		public function createStream($req, $resp, $args) {

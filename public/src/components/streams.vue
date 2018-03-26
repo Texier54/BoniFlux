@@ -6,7 +6,7 @@
 					<h2>Liste des streams en cours</h2>
 			</div>
 			<div class="columns">
-      		<stream  v-for="stream in abonnements" :stream="stream"></stream>
+      		<stream  v-for="stream in abonnements" :stream="stream" :key="stream.id"></stream>
   		</div>
     </section>
 	</div>

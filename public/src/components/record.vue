@@ -11,6 +11,16 @@
 					<div><video ref="video" id="video" width="640" height="480" autoplay></video></div>
 	        <section class="video-clips"></section>
 	      </div>
+        <div>
+          <form method="post" enctype="multipart/form-data" action="http://localhost/Boniflux/api/index.php/postvideo">
+            <p>
+              <label>Add file:</label><br/>
+              <input type="text" name="title" placeholder="Titre de la vidéo">
+              <input type="file" name="video"/>
+              <button type="submit">submit</button>
+            </p>
+          </form>
+        </div>
 			</div>
 		</section>
 	</div>
@@ -74,6 +84,13 @@ export default {
       a.download = this.clipName + '.webm';
       a.click();
       setTimeout(function() { URL.revokeObjectURL(url); }, 100);
+    },
+    postvideo() {
+      window.axios.post('postvideo/').then((response) => {
+				console.log(res.data)
+			}).catch((e) => {
+        console.error(e)
+			});
     }
   }
 };
