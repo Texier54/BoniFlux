@@ -279,6 +279,7 @@
 					$video->nom = $parsedBody['title'];
 					$video->description = $parsedBody['description'];
 					$video->filename = $filename;
+					$video->pseudo = $parsedBody['pseudo'];
 					$video->id_user = $parsedBody['id_user'];
 					$video->save();
 
@@ -313,8 +314,8 @@
 
 			//LE PROXY (a enlever si pas sur les machines de l'iut)
 
-			$opts = array('http' => array('proxy'=> 'tcp://www-cache.iutnc.univ-lorraine.fr:3128', 'request_fulluri'=> true));
-			$context = stream_context_create($opts);
+			// $opts = array('http' => array('proxy'=> 'tcp://www-cache.iutnc.univ-lorraine.fr:3128', 'request_fulluri'=> true));
+			// $context = stream_context_create($opts);
 
 			//RECUPERATION DES DONNEES GPS
 			$str = file_get_contents("http://ip-api.com/xml", NULL, $context);

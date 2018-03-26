@@ -4,7 +4,7 @@
         <section class="container">
             <div v-for="v in videos" :key="v.id">
                 <video :src="v.filename" controls></video>
-                <button>{{v.profil.nom}}</button>
+                <button>{{v.pseudo}}</button>
                 <h1>{{v.nom}}</h1>
                 <p>{{v.description}}</p>
             </div>
@@ -16,8 +16,8 @@
 import NavBar from "./navBar.vue";
 
 export default {
-	props: ['video'],
-    name: 'video',
+	props: ['videos'],
+    name: 'videos',
     components: { NavBar },
     data () {
         return {
@@ -27,18 +27,19 @@ export default {
     methods : {
 
     },
-    mounted(){
+    created(){
         window.axios.get('video').then((response) => {
-            this.videos = response.data;
+            this.videos = response.data
             this.videos.forEach(video => {
                 video.filename = "http://localhost/BoniFlux/uploads/"+video.filename
-                window.axios.get('user/'+video.id_user).then((res) => {
-                    video.profil= res.data
-                }).catch((e) => {
-                    console.error(e)
-                })
+                // window.axios.get('user/'+video.id_user).then((res) => {
+                //     video.pseudo= res.data.pseudo
+                // }).catch((e) => {
+                //     console.error(e)
+                // })
             })
-		}).catch((error) => {
+        })
+        .catch((error) => {
 
 		});
     }

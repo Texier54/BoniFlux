@@ -7,6 +7,7 @@ import abonnements from '@/components/abonnements.vue'
 import record from '@/components/record.vue'
 import streams from '@/components/streams.vue'
 import video from '@/components/video.vue'
+import profil from '@/components/profil.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,7 @@ export default new Router({
     { path: '/record', name: 'record', component: record},
     { path: '/streams', name: 'streams', component: streams},
     { path: '/video', name: 'video', component: video},
+    { path: '/profil/:nom', name: 'profil', component: profil},
     { path: '*', component: accueil}
   ]
 })

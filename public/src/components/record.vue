@@ -92,6 +92,7 @@ export default {
       formData.append('video', this.file)
       formData.append('title', this.title)
       formData.append('description', this.description)
+      formData.append('pseudo', this.$store.state.member.pseudo)
       formData.append('id_user', this.$store.state.member.id)
       window.axios.post( 'postvideo/',
         formData,
