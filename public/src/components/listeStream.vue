@@ -1,12 +1,13 @@
 <template>
-  <div class="column is-3">
-    <img src="http://download.seaicons.com/icons/iconsmind/outline/512/Webcam-icon.png">
-    <p>{{ stream.nom }}</p>
-    <strong v-if="stream.anonyme==0">{{ user.pseudo }}</strong>
-    <i><strong v-if="stream.anonyme==1">Anonyme</strong></i>
-
-    <div class="column is-size-5 has-text-centered data">
-          <router-link class="button is-success" :to="{ name:'diffusion', params : { id : stream.id } }">Regarder</router-link>
+  <div class="column is-2">
+    <img class="Timg" src="http://download.seaicons.com/icons/iconsmind/outline/512/Webcam-icon.png">
+    <div class="contentStream">
+      <p>{{ stream.nom }}</p>
+      <strong v-if="stream.anonyme==0">{{ user.pseudo }}</strong>
+      <i><strong v-if="stream.anonyme==1">Anonyme</strong></i>
+    </div>
+    <div class="has-text-centered data">
+          <router-link class="button is-success" :to="{ name:'diffusion', params : { id : stream.id } }"><i class="fas fa-eye marker"></i>Regarder</router-link>
     </div>
 
   </div>
@@ -48,11 +49,6 @@ export default {
   color: #363636;
 }
 
-.columns{
-  border-radius: 5px;
-  margin-top: 20px;
-}
-
 .titre{
   background-color: #DBDBDB;
 }
@@ -68,4 +64,16 @@ export default {
   border-bottom: 1px solid black;
 }
 
+.Timg{
+  width:50%;
+  margin-left: 25%;
+}
+
+.marker{
+  margin-right: 10px;
+}
+
+.contentStream{
+  text-align: center;
+}
 </style>
