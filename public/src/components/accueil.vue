@@ -43,7 +43,7 @@
 
 
       <div class="columns">
-        
+
       </div>
 
     </section>
@@ -278,7 +278,8 @@ export default {
         descriptionStream : this.descriptionStream,
         urgence : this.urgence,
         anonyme : this.anonyme,
-        publique : this.publique
+        publique : this.publique,
+        id_user : this.$store.state.member.id
 
       }).then((response) => {
 
