@@ -24,7 +24,7 @@ export default new Router({
     { path: '/record', name: 'record', component: record},
     { path: '/streams', name: 'streams', component: streams},
     { path: '/video', name: 'video', component: video},
-    { path: '/profil/:nom', name: 'profil', component: profil},
+    { path: '/profil/:id', name: 'profil', component: profil},
     { path: '*', component: accueil}
   ]
 })
