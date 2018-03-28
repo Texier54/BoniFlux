@@ -2,14 +2,17 @@
     <div>
         <nav-bar></nav-bar>
         <section class="container">
-            <div v-for="v in videos" :key="v.id">
-                <video :src="v.filename" controls></video>
-                <div>
-                    <router-link :to="{ name: 'profil', params: { id: v.id_user }}">User</router-link>
-                    <h1>{{v.nom}}</h1>
-                    <p>{{v.description}}</p>
+          <br>
+              <div class="columns">
+                <div class="column is-4" v-for="v in videos" :key="v.id">
+                  <video :src="v.filename" controls></video>
+                  <div>
+                      <router-link :to="{ name: 'profil', params: { id: v.id_user }}">User</router-link>
+                      <h1>{{v.nom}}</h1>
+                      <p>{{v.description}}</p>
+                  </div>
                 </div>
-            </div>
+              </div>
         </section>
     </div>
 </template>
