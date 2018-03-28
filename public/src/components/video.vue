@@ -32,7 +32,7 @@ export default {
         window.axios.get('video').then((response) => {
             this.videos = response.data
             this.videos.forEach(video => {
-                video.filename = "http://localhost/BoniFlux/uploads/"+video.filename
+                video.filename = "/uploads/"+video.filename
                 // window.axios.get('user/'+video.id_user).then((res) => {
                 //     video.profil = res.data
                 // }).catch((e) => {
