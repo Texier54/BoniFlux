@@ -355,6 +355,8 @@
 			}
 
 			$createStream->id_user = $parsedBody['id_user'];
+			$createStream->IP = $parsedBody['IP'];
+			$createStream->port = $parsedBody['port'];
 
 			//Enregistrement de la creation du stream
 			try {

@@ -138,6 +138,16 @@
                 <input class="input" type="text" placeholder="Description" v-model="descriptionStream">
               </div>
 
+              <label class="label">Adresse IP</label>
+              <div class="control">
+                <input class="input" type="text" placeholder="IP" v-model="IP">
+              </div>
+
+              <label class="label">Port</label>
+              <div class="control">
+                <input class="input" type="text" placeholder="Port" v-model="port">
+              </div>
+
               <label class="label">Activer le mode Urgence ?</label>
               <div class="control">
                <input id="checkBox" type="checkbox" v-model="urgence">
@@ -192,6 +202,8 @@ export default {
       anonyme : false,
       publique : true,
       visiteur: true,
+      IP: '',
+      port: '',
     }
   },
   mounted() {
