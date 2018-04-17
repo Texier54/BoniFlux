@@ -1,6 +1,6 @@
 ﻿# BoniFlux
 
-BoniFlux est un site permettant le streaming de sa Webcam à plusieurs personnes. Vous pouvez vous connecter, chater, streamer, vous abonner à des streamer et venir regarder des streams sans compte utilisateurs.
+BoniFlux est un site permettant le streaming de sa Webcam à plusieurs personnes. Vous pouvez vous connecter, chater, streamer, vous abonner à des streamer et venir regarder des streams sans compte utilisateur.
 
 ### Installation
 
@@ -12,7 +12,7 @@ BoniFlux est un site permettant le streaming de sa Webcam à plusieurs personnes
 * Dans ./public npm install
 * Dans ./public npm run dev
 ```
-* Pour acceder au site il faudra aller au lien **localhost:XXXX**, dependant de ce que votre npm run dev vous dis, normalement c'est le port **8080**
+* Pour acceder au site il faudra aller au lien **localhost:XXXX**, dependant de ce que votre npm run dev vous dit, normalement c'est le port **8080**
 
 ## Fait avec
 
