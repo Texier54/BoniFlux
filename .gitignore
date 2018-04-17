@@ -4,3 +4,4 @@ src/conf/boniflux.db.conf.ini
 /doc/
 /video/
 uploads/
+/streaminglivevideo/node_modules

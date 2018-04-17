@@ -5,8 +5,7 @@
       <div class="columns main">
         <div class="mainvideo column is-8">
           <h2 class="is-size-1">{{ stream.nom }}</h2>
-          <video src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" controls="controls"></video>
-          <!--<iframe autoplay="1" src="https://www.youtube.com/embed/yZLRrNFZN50?autoplay=0" style="width: 100%; height: 100%;" frameborder="0" allowfullscreen ></iframe>-->
+          <img src="" ref="retour"/>
         </div>
         <div class="column is-4">
             <h2>Chat</h2>
@@ -37,6 +36,8 @@
 import NavBar from './navBar.vue'
 import message from './message.vue'
 
+let socket = io("localhost:3000")
+
 export default {
   name: 'diffusion',
   components: {NavBar, message},
@@ -49,6 +50,7 @@ export default {
       abonnements: '',
       ifabo: true,
       visiteur: true,
+      imagestream: ''
     }
   },
 
@@ -107,6 +109,11 @@ export default {
     }
   },
   mounted() {
+    socket.on('retour', data => {
+      this.imagestream = ''
+      this.imagestream = data
+      this.$refs.retour.src = this.imagestream
+    })
 
     //Verif visiteur
     if(this.$store.state.token == 'visiteur')

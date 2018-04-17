@@ -19,19 +19,21 @@
 				</ul>
 			</div>
 			<div class="column is-4">
-	            <h2>Chat</h2>
-	            <div class="listemessage" id="messages">
-	              <message v-for="message in messages" :message="message" :key="message.id"></message>
-	            </div>
-	            <input v-if="visiteur" @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
-	            <input v-else class="input" placeholder="Vous ne pouvez pas envoyer de message sur votre stream" disabled>
-        	</div>
+				<h2>Chat</h2>
+				<div class="listemessage" id="messages">
+					<message v-for="message in messages" :message="message" :key="message.id"></message>
+				</div>
+				<input v-if="visiteur" @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
+				<input v-else class="input" placeholder="Vous ne pouvez pas envoyer de message sur votre stream" disabled>
+      </div>
 		</div>
 		</section>
 	</div>
 </template>
 
 <script>
+
+let socket = io("localhost:3000")
 
 import NavBar from './navBar.vue'
 
@@ -46,7 +48,8 @@ export default {
 		intervalProgress: '',
 		messages: '',
 		editMessage: '',
-		visiteur: false
+		visiteur: false,
+		stream: ''
     }
   },
 
@@ -76,7 +79,12 @@ export default {
 	    },
 
 		demarrer() {
-			console.log("Je stream")
+			window.setInterval(()=>{
+				this.$refs.canvas.style.display = 'none'
+				this.stream = this.$refs.canvas
+				this.stream.getContext("2d").drawImage(this.video, 0, 0, 640, 480)
+				socket.emit("stream", this.stream.toDataURL())
+			},46)
 		},
 		saveMess() {
 			alert('Not Working')

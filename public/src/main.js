@@ -11,7 +11,7 @@ Vue.component('v-marker', Vue2Leaflet.Marker);
 
 
 window.axios = axios.create({
-  baseURL: 'https://boniflux.texier.tk/api/index.php',
+  baseURL: 'http://localhost/BoniFlux/api/index.php',
 });
 
 
