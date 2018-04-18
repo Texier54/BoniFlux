@@ -4,10 +4,11 @@ BoniFlux est un site permettant le streaming de sa Webcam à plusieurs personnes
 
 ### Installation
 
-```
+```bash
 * Clone le depot git — git clone https://github.com/Texier54/BoniFlux
 * Configuration de la connexion à la BDD ./src/conf/boniflux.db.conf.ini
 * Importation des tables de la BDD /sql/boniflux.sql
+
 * Dans ./src composer install
 * Dans ./public npm install
 * Dans ./public npm run dev
