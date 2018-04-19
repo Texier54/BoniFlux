@@ -5,9 +5,36 @@
 		<div class="columns">
 			<div class="column is-8">
     		<a class="btn button is-link" @click="demarrer">Démarer</a>
-				<div>
+				<!-- <div>
 					<video class="video" ref="video" id="video" autoplay></video>
-				</div>
+				</div> -->
+
+			<div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Réception</h2>
+                <p>
+                    <button id="start" class="btn btn-primary">Démarrer la vidéo</button>
+                </p>
+                <textarea id="offer" class="form-control"></textarea>
+            </div>
+            <div class="col-sm-6">
+                <h2>Envoi</h2>
+                <video id="emitter-video" width="100%" height="400px" controls></video>
+                <form id="incoming">
+                    <div class="form-group">
+                        <textarea class="form-control"></textarea>
+                    </div>
+                    <p>
+                        <button type="submit">Enregistrer l'offre</button>
+                    </p>
+                </form>
+            </div>
+					</div>
+			</div>
+
+
+
 				<div>
 					<button class="btn button is-success" id="snap" v-on:click="capture()">Snap Photo</button>
 				</div>
@@ -32,77 +59,87 @@
 </template>
 
 <script>
+let socket = io("localhost:3000");
 
-let socket = io("localhost:3000")
-
-import NavBar from './navBar.vue'
+import NavBar from "./navBar.vue";
 
 export default {
-  name: 'emission',
-  components: {NavBar},
-  data () {
+  name: "emission",
+  components: { NavBar },
+  data() {
     return {
-		video: {},
-		canvas: {},
-		captures: [],
-		intervalProgress: '',
-		messages: '',
-		editMessage: '',
-		visiteur: false,
-		stream: ''
-    }
+      video: {},
+      canvas: {},
+      captures: [],
+      intervalProgress: "",
+      messages: "",
+      editMessage: "",
+      visiteur: false,
+      stream: ""
+    };
   },
 
-	mounted() {
-	    this.video = this.$refs.video;
-	    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-	        navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-	            this.video.src = window.URL.createObjectURL(stream)
-	            this.video.play()
-	        });
-		}
-			// window.axios.get('messages/'+this.$route.params.id).then((response) => {
-			// 	this.messages = response.data;
-			// 	window.setInterval(function() {
-			// 		var elem = document.getElementById('messages');
-			// 		elem.scrollTop = elem.scrollHeight;
-			// 	}, 500);
-			// }).catch((error) => {
-			// });
-	},
+  mounted() {
+    this.video = this.$refs.video;
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: false })
+        .then(stream => {
+          this.video.src = window.URL.createObjectURL(stream);
+          this.video.play();
+        });
+    }
+    let app = document.createElement("script", {
+      attrs: { src: require("../assets/app.js") }
+    });
+    document.head.appendChild(app);
 
-	methods: {
-	    capture() {
-	        this.canvas = this.$refs.canvas
-	        var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480)
-	        this.captures.push(canvas.toDataURL("image/png"))
-	    },
+    let simplePeer = document.createElement("script", {
+      attrs: { src: require("../assets/simplePeer.js") }
+    });
+    document.head.appendChild(simplePeer);
+    // window.axios.get('messages/'+this.$route.params.id).then((response) => {
+    // 	this.messages = response.data;
+    // 	window.setInterval(function() {
+    // 		var elem = document.getElementById('messages');
+    // 		elem.scrollTop = elem.scrollHeight;
+    // 	}, 500);
+    // }).catch((error) => {
+    // });
+  },
 
-		demarrer() {
-			window.setInterval(()=>{
-				this.$refs.canvas.style.display = 'none'
-				this.stream = this.$refs.canvas
-				this.stream.getContext("2d").drawImage(this.video, 0, 0, 640, 480)
-				socket.emit("stream", this.stream.toDataURL())
-			},46)
-		},
-		saveMess() {
-			alert('Not Working')
-    	}
-	}
-}
+  methods: {
+    capture() {
+      this.canvas = this.$refs.canvas;
+      var context = this.canvas
+        .getContext("2d")
+        .drawImage(this.video, 0, 0, 640, 480);
+      this.captures.push(canvas.toDataURL("image/png"));
+    },
+
+    demarrer() {
+      window.setInterval(() => {
+        this.$refs.canvas.style.display = "none";
+        this.stream = this.$refs.canvas;
+        this.stream.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
+        socket.emit("stream", this.stream.toDataURL());
+      }, 46);
+    },
+    saveMess() {
+      alert("Not Working");
+    }
+  }
+};
 </script>
 
 <style scoped>
-
 h2 {
   font-size: 26px;
   padding: 4px 4px;
 }
 
-
 body {
-  background-color: #F2F6FA;
+  background-color: #f2f6fa;
   margin: 0px;
   padding: 0px;
   outline: 0px;
@@ -111,7 +148,7 @@ body {
   position: absolute;
 }
 
-.btn{
+.btn {
   font-weight: bold;
   -webkit-transition-property: color;
   -webkit-transition-duration: 0.5s;
@@ -121,15 +158,15 @@ body {
   transition-duration: 0.5s;
 }
 
-.btn:hover{
+.btn:hover {
   color: #363636;
 }
 
-.button{
-	margin: 10px;
+.button {
+  margin: 10px;
 }
 
-#video{
-	height: 480px;
+#video {
+  height: 480px;
 }
 </style>

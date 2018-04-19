@@ -2,7 +2,7 @@
   <div>
     <nav-bar></nav-bar>
     <section class="container">
-      <div class="columns main">
+      <!-- <div class="columns main">
         <div class="mainvideo column is-8">
           <h2 class="is-size-1">{{ stream.nom }}</h2>
           <img src="" ref="retour"/>
@@ -25,145 +25,169 @@
         <div class="">
             <div id="map">
             </div>
-        </div>
+        </div> -->
+<div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Réception</h2>
+                <video id="receiver-video" width="100%" height="400px" controls></video>
+                <p>
+                    <button id="start" class="btn btn-primary">Démarrer la vidéo</button>
+                </p>
+                <textarea id="offer" class="form-control"></textarea>
+            </div>
+            <div class="col-sm-6">
+                <h2>Envoi</h2>
+                <form id="incoming">
+                    <div class="form-group">
+                        <textarea class="form-control"></textarea>
+                    </div>
+                    <p>
+                        <button type="submit">Enregistrer l'offre</button>
+                    </p>
+                </form>
+            </div>
+					</div>
+			</div>
+        
 
     </section>
   </div>
 </template>
 
 <script>
+import NavBar from "./navBar.vue";
+import message from "./message.vue";
 
-import NavBar from './navBar.vue'
-import message from './message.vue'
-
-let socket = io("localhost:3000")
+let socket = io("localhost:3000");
 
 export default {
-  name: 'diffusion',
-  components: {NavBar, message},
-  data () {
+  name: "diffusion",
+  components: { NavBar, message },
+  data() {
     return {
-      map: '',
-      messages: '',
-      editMessage: '',
-      stream: '',
-      abonnements: '',
+      map: "",
+      messages: "",
+      editMessage: "",
+      stream: "",
+      abonnements: "",
       ifabo: true,
       visiteur: true,
-      imagestream: ''
-    }
+      imagestream: ""
+    };
   },
 
-  methods : {
-
+  methods: {
     abo() {
-
-      if(this.visiteur == false)
-      {
-        alert('Vous ne pouvez pas vous abonner en tant que visiteur');
+      if (this.visiteur == false) {
+        alert("Vous ne pouvez pas vous abonner en tant que visiteur");
+      } else {
+        window.axios
+          .post("abonnement", {
+            id_streamer: this.stream.id_user,
+            id_abonne: this.$store.state.member.id
+          })
+          .then(response => {
+            this.ifabo = false;
+          })
+          .catch(error => {
+            alert(error);
+          });
       }
-      else {
-        window.axios.post('abonnement',{
-
-          id_streamer : this.stream.id_user,
-          id_abonne : this.$store.state.member.id,
-
-        }).then((response) => {
-
-          this.ifabo = false;
-
-        }).catch((error) => {
-          alert(error);
-        });
-      }
-
     },
 
     saveMess() {
-
-
-      window.axios.post('messages/'+this.$route.params.id,{
-
-        message : this.editMessage,
-        id_stream : this.$route.params.id,
-        id_user : this.$store.state.member.id,
-
-      }).then((response) => {
-
-        this.editMessage = '';
-        window.axios.get('messages/'+this.$route.params.id).then((response) => {
-          this.messages = response.data;
-          window.setInterval(function() {
-            var elem = document.getElementById('messages');
-            elem.scrollTop = elem.scrollHeight;
-          }, 100);
-        }).catch((error) => {
+      window.axios
+        .post("messages/" + this.$route.params.id, {
+          message: this.editMessage,
+          id_stream: this.$route.params.id,
+          id_user: this.$store.state.member.id
+        })
+        .then(response => {
+          this.editMessage = "";
+          window.axios
+            .get("messages/" + this.$route.params.id)
+            .then(response => {
+              this.messages = response.data;
+              window.setInterval(function() {
+                var elem = document.getElementById("messages");
+                elem.scrollTop = elem.scrollHeight;
+              }, 100);
+            })
+            .catch(error => {
+              alert(error);
+            });
+        })
+        .catch(error => {
           alert(error);
         });
-
-      }).catch((error) => {
-        alert(error);
-      });
-
-
     }
   },
   mounted() {
-    socket.on('retour', data => {
-      this.imagestream = ''
-      this.imagestream = data
-      this.$refs.retour.src = this.imagestream
-    })
+    socket.on("retour", data => {
+      this.imagestream = "";
+      this.imagestream = data;
+      this.$refs.retour.src = this.imagestream;
+    });
 
     //Verif visiteur
-    if(this.$store.state.token == 'visiteur')
-      this.visiteur = false;
+    if (this.$store.state.token == "visiteur") this.visiteur = false;
     else {
-      window.axios.get('abonnements/'+this.$store.state.member.id).then((response) => {
-    		this.abonnements = response.data;
-        for(var i= 0; i < this.abonnements.length; i++)
-        {
-    		    if(this.abonnements[i].id_streamer == this.stream.id_user)
-            {
+      window.axios
+        .get("abonnements/" + this.$store.state.member.id)
+        .then(response => {
+          this.abonnements = response.data;
+          for (var i = 0; i < this.abonnements.length; i++) {
+            if (this.abonnements[i].id_streamer == this.stream.id_user) {
               this.ifabo = false;
             }
-        }
-    	}).catch((error) => {
-    	});
+          }
+        })
+        .catch(error => {});
     }
 
-    window.axios.get('stream/'+this.$route.params.id).then((response) => {
-      this.stream = response.data;
+    window.axios
+      .get("stream/" + this.$route.params.id)
+      .then(response => {
+        this.stream = response.data;
 
-      this.map = L.map('map', {
-        center: [this.stream.latitude, this.stream.longitude],
-        zoom: 12,
+        this.map = L.map("map", {
+          center: [this.stream.latitude, this.stream.longitude],
+          zoom: 12
         });
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: 'Boniflux',
-            minZoom: 1,
-            maxZoom: 16
+        L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+          attribution: "Boniflux",
+          minZoom: 1,
+          maxZoom: 16
         }).addTo(this.map);
+      })
+      .catch(error => {});
 
-    }).catch((error) => {
+    window.axios
+      .get("messages/" + this.$route.params.id)
+      .then(response => {
+        this.messages = response.data;
+        window.setInterval(function() {
+          var elem = document.getElementById("messages");
+          elem.scrollTop = elem.scrollHeight;
+        }, 500);
+      })
+      .catch(error => {});
+    let app = document.createElement("script", {
+      attrs: { src: require("../assets/app.js") }
     });
+    document.head.appendChild(app);
 
-    window.axios.get('messages/'+this.$route.params.id).then((response) => {
-      this.messages = response.data;
-      window.setInterval(function() {
-        var elem = document.getElementById('messages');
-        elem.scrollTop = elem.scrollHeight;
-      }, 500);
-    }).catch((error) => {
+    let simplePeer = document.createElement("script", {
+      attrs: { src: require("../assets/simplePeer.js") }
     });
-
+    document.head.appendChild(simplePeer);
   }
-}
+};
 </script>
 
 <style scoped>
-
-.container{
+.container {
 }
 
 #map {
@@ -175,9 +199,8 @@ h2 {
   padding: 4px 4px;
 }
 
-
 body {
-  background-color: #F2F6FA;
+  background-color: #f2f6fa;
   margin: 0px;
   padding: 0px;
   outline: 0px;
@@ -186,7 +209,7 @@ body {
   position: absolute;
 }
 
-.btn{
+.btn {
   font-weight: bold;
   -webkit-transition-property: color;
   -webkit-transition-duration: 0.5s;
@@ -196,21 +219,20 @@ body {
   transition-duration: 0.5s;
 }
 
-.btn:hover{
+.btn:hover {
   color: #363636;
 }
 
-.listemessage{
+.listemessage {
   max-height: 400px;
   overflow: scroll;
 }
 
-.btnAbo{
+.btnAbo {
   margin: 10px;
 }
 
-.main{
+.main {
   margin-top: 30px;
 }
-
 </style>
