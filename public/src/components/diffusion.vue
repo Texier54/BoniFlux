@@ -2,10 +2,10 @@
   <div>
     <nav-bar></nav-bar>
     <section class="container">
-      <!-- <div class="columns main">
+      <div class="columns main">
         <div class="mainvideo column is-8">
           <h2 class="is-size-1">{{ stream.nom }}</h2>
-          <img src="" ref="retour"/>
+          <video id="receiver-video" ref="video" width="100%" height="400px" controls></video>
         </div>
         <div class="column is-4">
             <h2>Chat</h2>
@@ -25,32 +25,7 @@
         <div class="">
             <div id="map">
             </div>
-        </div> -->
-<div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <h2>Réception</h2>
-                <video id="receiver-video" width="100%" height="400px" controls></video>
-                <p>
-                    <button id="start" class="btn btn-primary">Démarrer la vidéo</button>
-                </p>
-                <textarea id="offer" class="form-control"></textarea>
-            </div>
-            <div class="col-sm-6">
-                <h2>Envoi</h2>
-                <form id="incoming">
-                    <div class="form-group">
-                        <textarea class="form-control"></textarea>
-                    </div>
-                    <p>
-                        <button type="submit">Enregistrer l'offre</button>
-                    </p>
-                </form>
-            </div>
-					</div>
-			</div>
-        
-
+        </div>
     </section>
   </div>
 </template>
@@ -60,6 +35,8 @@ import NavBar from "./navBar.vue";
 import message from "./message.vue";
 
 let socket = io("localhost:3000");
+
+let p = null;
 
 export default {
   name: "diffusion",
@@ -73,7 +50,8 @@ export default {
       abonnements: "",
       ifabo: true,
       visiteur: true,
-      imagestream: ""
+      imagestream: "",
+      video: ""
     };
   },
 
@@ -109,10 +87,10 @@ export default {
             .get("messages/" + this.$route.params.id)
             .then(response => {
               this.messages = response.data;
-              window.setInterval(function() {
-                var elem = document.getElementById("messages");
-                elem.scrollTop = elem.scrollHeight;
-              }, 100);
+              // window.setInterval(function() {
+              //   var elem = document.getElementById("messages");
+              //   elem.scrollTop = elem.scrollHeight;
+              // }, 100);
             })
             .catch(error => {
               alert(error);
@@ -121,14 +99,31 @@ export default {
         .catch(error => {
           alert(error);
         });
+    },
+    bindEvents(p) {
+      p.on("error", err => {
+        console.log("Error", err);
+      });
+
+      p.on("signal", data => {
+        //document.querySelector("#offer").textContent = JSON.stringify(data);
+        socket.emit("answerClient", JSON.stringify(data));
+      });
+
+      p.on("stream", stream => {
+        this.video.volume = 0;
+        this.video.srcObject = stream;
+        this.video.play();
+      });
     }
   },
   mounted() {
-    socket.on("retour", data => {
-      this.imagestream = "";
-      this.imagestream = data;
-      this.$refs.retour.src = this.imagestream;
-    });
+    this.video = this.$refs.video;
+    // socket.on("retour", data => {
+    //   this.imagestream = "";
+    //   this.imagestream = data;
+    //   this.$refs.retour.src = this.imagestream;
+    // });
 
     //Verif visiteur
     if (this.$store.state.token == "visiteur") this.visiteur = false;
@@ -167,21 +162,56 @@ export default {
       .get("messages/" + this.$route.params.id)
       .then(response => {
         this.messages = response.data;
-        window.setInterval(function() {
-          var elem = document.getElementById("messages");
-          elem.scrollTop = elem.scrollHeight;
-        }, 500);
+        // window.setInterval(function() {
+        //   var elem = document.getElementById("messages");
+        //   elem.scrollTop = elem.scrollHeight;
+        // }, 500);
       })
       .catch(error => {});
-    let app = document.createElement("script", {
-      attrs: { src: require("../assets/app.js") }
-    });
-    document.head.appendChild(app);
 
     let simplePeer = document.createElement("script", {
       attrs: { src: require("../assets/simplePeer.js") }
     });
     document.head.appendChild(simplePeer);
+
+    socket.on("offerForClient", offer => {
+      if (p == null) {
+        p = new SimplePeer({
+          initiator: false,
+          trickle: false,
+          config: {
+            iceServers: [
+              {
+                urls: ["stun:stun.l.google.com:19302"]
+              },
+              // {
+              //   url: "stun:stun2.l.google.com:19302"
+              // },
+              // {
+              //   url: "stun:stun3.l.google.com:19302"
+              // },
+              // {
+              //   url: "turn:192.158.29.39:3478?transport=udp",
+              //   credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
+              //   username: "28224511:1379330808"
+              // },
+              {
+                urls: ["turn:numb.viagenie.ca"],
+                credential: "muazkh",
+                username: "webrtc@live.com"
+              }
+            ]
+          }
+        });
+        this.bindEvents(p);
+      }
+
+      p.signal(JSON.parse(offer));
+    });
+
+    // document.querySelector("#incoming").addEventListener("submit", e => {
+
+    // });
   }
 };
 </script>

@@ -4,37 +4,9 @@
 		<section class="container">
 		<div class="columns">
 			<div class="column is-8">
-    		<a class="btn button is-link" @click="demarrer">Démarer</a>
-				<!-- <div>
-					<video class="video" ref="video" id="video" autoplay></video>
-				</div> -->
-
-			<div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <h2>Réception</h2>
-                <p>
-                    <button id="start" class="btn btn-primary">Démarrer la vidéo</button>
-                </p>
-                <textarea id="offer" class="form-control"></textarea>
-            </div>
-            <div class="col-sm-6">
-                <h2>Envoi</h2>
-                <video id="emitter-video" width="100%" height="400px" controls></video>
-                <form id="incoming">
-                    <div class="form-group">
-                        <textarea class="form-control"></textarea>
-                    </div>
-                    <p>
-                        <button type="submit">Enregistrer l'offre</button>
-                    </p>
-                </form>
-            </div>
-					</div>
-			</div>
-
-
-
+        <!-- <button  class="btn btn-primary">Démarrer la vidéo</button> -->
+        <a class="btn button is-link" id="start">Démarer</a>
+        <video id="emitter-video" ref="video" width="100%" height="400px" controls></video>
 				<div>
 					<button class="btn button is-success" id="snap" v-on:click="capture()">Snap Photo</button>
 				</div>
@@ -60,6 +32,7 @@
 
 <script>
 let socket = io("localhost:3000");
+let p = null;
 
 import NavBar from "./navBar.vue";
 
@@ -81,31 +54,102 @@ export default {
 
   mounted() {
     this.video = this.$refs.video;
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: false })
-        .then(stream => {
-          this.video.src = window.URL.createObjectURL(stream);
-          this.video.play();
-        });
-    }
-    let app = document.createElement("script", {
-      attrs: { src: require("../assets/app.js") }
-    });
-    document.head.appendChild(app);
+    // if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    //   navigator.mediaDevices
+    //     .getUserMedia({ video: true, audio: false })
+    //     .then(stream => {
+    //       this.video.src = window.URL.createObjectURL(stream);
+    //       this.video.play();
+    //     });
+    // }
+    // let app = document.createElement("script", {
+    //   attrs: { src: require("../assets/app.js") }
+    // });
+    // document.head.appendChild(app);
 
     let simplePeer = document.createElement("script", {
       attrs: { src: require("../assets/simplePeer.js") }
     });
     document.head.appendChild(simplePeer);
-    // window.axios.get('messages/'+this.$route.params.id).then((response) => {
-    // 	this.messages = response.data;
-    // 	window.setInterval(function() {
-    // 		var elem = document.getElementById('messages');
-    // 		elem.scrollTop = elem.scrollHeight;
-    // 	}, 500);
-    // }).catch((error) => {
-    // });
+
+    document.querySelector("#start").addEventListener("click", e => {
+      navigator.mediaDevices
+        .getUserMedia({
+          audio: true,
+          video: true
+        })
+        .then(stream => {
+          p = new SimplePeer({
+            initiator: true,
+            stream: stream,
+            config: {
+              iceServers: [
+                {
+                  urls: ["stun:stun.l.google.com:19302"]
+                },
+                // {
+                //   url: "stun:stun2.l.google.com:19302"
+                // },
+                // {
+                //   url: "stun:stun3.l.google.com:19302"
+                // },
+                // {
+                //   url: "turn:192.158.29.39:3478?transport=udp",
+                //   credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
+                //   username: "28224511:1379330808"
+                // },
+                {
+                  urls: ["turn:numb.viagenie.ca"],
+                  credential: "muazkh",
+                  username: "webrtc@live.com"
+                }
+              ]
+            },
+            trickle: false
+          });
+
+          this.bindEvents(p);
+
+          this.video.volume = 0;
+          this.video.srcObject = stream;
+          this.video.play();
+        });
+    });
+
+    socket.on("answerForInitiator", answer => {
+      if (p == null) {
+        p = new SimplePeer({
+          initiator: false,
+          trickle: false,
+          config: {
+            iceServers: [
+              {
+                urls: ["stun:stun.l.google.com:19302"]
+              },
+              // {
+              //   url: "stun:stun2.l.google.com:19302"
+              // },
+              // {
+              //   url: "stun:stun3.l.google.com:19302"
+              // },
+              // {
+              //   url: "turn:192.158.29.39:3478?transport=udp",
+              //   credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
+              //   username: "28224511:1379330808"
+              // },
+              {
+                urls: ["turn:numb.viagenie.ca"],
+                credential: "muazkh",
+                username: "webrtc@live.com"
+              }
+            ]
+          }
+        });
+        this.bindEvents(p);
+      }
+
+      p.signal(JSON.parse(answer));
+    });
   },
 
   methods: {
@@ -117,16 +161,30 @@ export default {
       this.captures.push(canvas.toDataURL("image/png"));
     },
 
-    demarrer() {
-      window.setInterval(() => {
-        this.$refs.canvas.style.display = "none";
-        this.stream = this.$refs.canvas;
-        this.stream.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
-        socket.emit("stream", this.stream.toDataURL());
-      }, 46);
-    },
+    // demarrer() {
+    //   window.setInterval(() => {
+    //     this.$refs.canvas.style.display = "none";
+    //     this.stream = this.$refs.canvas;
+    //     this.stream.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
+    //     socket.emit("stream", this.stream.toDataURL());
+    //   }, 46);
+    // },
     saveMess() {
       alert("Not Working");
+    },
+    bindEvents(p) {
+      p.on("error", err => {
+        console.log("Error", err);
+      });
+
+      p.on("signal", data => {
+        //document.querySelector("#offer").textContent = JSON.stringify(data);
+        socket.emit("offerInitiator", JSON.stringify(data));
+      });
+
+      p.on("stream", stream => {
+        console.log("Nice");
+      });
     }
   }
 };
