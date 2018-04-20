@@ -37,4 +37,4 @@ BoniFlux est un site permettant le streaming de sa Webcam à plusieurs personnes
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [MIT](LICENSE) file for details
