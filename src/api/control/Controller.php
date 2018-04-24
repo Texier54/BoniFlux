@@ -23,7 +23,7 @@
 		public function stream($req, $resp, $args) {
 
 			$stream = new \boniflux\common\models\Stream();
-			$stream = $stream->limit(5)
+			$stream = $stream->limit(4)
 							->where('etat', '=', 1)
 							->where('publique', '=', 1)
 							->where('trash', '<>', 1)

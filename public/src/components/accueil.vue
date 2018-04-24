@@ -19,7 +19,7 @@
           <button class="button is-link is-large is-capitalized has-text-weight-bold" @click="openStream"><i class="marker fas fa-circle" style="color: red;"></i>Démarrer le Stream</button>
           <!-- Bouton pour modal stream -->
           <router-link :to="{name:'record'}" class="button is-link is-large is-capitalized has-text-weight-bold"><i class="marker fas fa-circle" style="color: red;"></i>Record</router-link>
-
+          <router-link :to="{name:'video'}" class="button is-link is-large is-capitalized has-text-weight-bold">Voir les videos</router-link>
         </div>
       </nav>
       <div class="border">
