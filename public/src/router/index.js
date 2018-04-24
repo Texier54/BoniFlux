@@ -18,13 +18,13 @@ export default new Router({
       component: accueil,
       name: 'accueil',
     },
-    { path: '/emission', name: 'emission', component: emission},
-    { path: '/diffusion/:id', name: 'diffusion', component: diffusion},
-    { path: '/abonnements', name: 'abonnements', component: abonnements},
-    { path: '/record', name: 'record', component: record},
-    { path: '/streams', name: 'streams', component: streams},
-    { path: '/video', name: 'video', component: video},
-    { path: '/profil/:id', name: 'profil', component: profil},
-    { path: '*', component: accueil}
+    { path: '/emission', name: 'emission', component: emission },
+    { path: '/diffusion/:id', name: 'diffusion', component: diffusion },
+    { path: '/abonnements', name: 'abonnements', component: abonnements },
+    { path: '/record', name: 'record', component: record },
+    { path: '/streams', name: 'streams', component: streams },
+    { path: '/video', name: 'video', component: video },
+    { path: '/profil/:id', name: 'profil', component: profil }
+    // { path: '*', component: accueil}
   ]
 })

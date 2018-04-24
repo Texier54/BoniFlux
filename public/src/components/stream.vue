@@ -15,38 +15,40 @@
 </template>
 
 <script>
-
 export default {
-	props: ['stream'],
-  name: 'stream',
+  props: ["stream"],
+  name: "stream",
   components: {},
-  data () {
+  data() {
     return {
-			user: '',
-    }
+      user: ""
+    };
   },
-  methods : {
-  },
-	mounted() {
-		window.axios.get('user/'+this.abonnement.id_streamer).then((response) => {
-      this.user = response.data;
-    }).catch((error) => {
-    });
-	}
-}
+  methods: {},
+  mounted() {
+    console.log(this.stream.id);
+    console.log(this.stream.nom);
+    window.axios
+      .get("user/" + this.stream.id_user)
+      .then(response => {
+        this.user = response.data;
+      })
+      .catch(error => {});
+  }
+};
 </script>
 
 <style scoped>
-.Timg{
-  width:50%;
+.Timg {
+  width: 50%;
   margin-left: 25%;
 }
 
-.marker{
+.marker {
   margin-right: 10px;
 }
 
-.contentStream{
+.contentStream {
   text-align: center;
 }
 </style>
