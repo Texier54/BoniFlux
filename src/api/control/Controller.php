@@ -26,6 +26,8 @@
 			$stream = $stream->limit(5)
 							->where('etat', '=', 1)
 							->where('publique', '=', 1)
+							->where('trash', '<>', 1)
+							->orderBy('updated_at', 'desc')
 							->get();
 
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
@@ -318,7 +320,7 @@
 			$context = stream_context_create($opts);
 */
 			//RECUPERATION DES DONNEES GPS
-			$str = file_get_contents("http://ip-api.com/xml", NULL, $context);
+			$str = file_get_contents("http://ip-api.com/xml");//, NULL, $context
 			$xml = simplexml_load_string($str, 'SimpleXMLElement',LIBXML_NOCDATA);
 
 			$parsedBody = $req->getParsedBody();
@@ -327,6 +329,7 @@
 			$createStream = new \boniflux\common\models\Stream();
 			$createStream->nom = $parsedBody['nomStream'];
 			$createStream->description = $parsedBody['descriptionStream'];
+			$createStream->stream_room_uuid = $parsedBody['stream_room_uuid'];
 			//GESTION ETAT
 			//1 = Créer
 			//2 = Terminer
@@ -335,6 +338,7 @@
 			//GESTION ETAT
 			$createStream->latitude = $xml->lat;
 			$createStream->longitude = $xml->lon;
+			$createStream->trash = 0;
 
 			//0 = video non anonyme
 			//1 = video anonyme
@@ -389,8 +393,24 @@
 
 			//$tab = $messages;
 
-			$resp->getBody()->write(json_encode($tab));
+			$resp->getBody()->write(json_encode($createStream));
 			return $resp;
+		}
+
+		public function stopStream($req, $resp){
+			$parsedBody = $req->getParsedBody();
+
+			if(isset($parsedBody['trash']) && isset($parsedBody['uuid'])){
+
+				$stream = new \boniflux\common\models\Stream();
+				$stream = $stream->where('stream_room_uuid','=',$parsedBody['uuid'])->first();
+				$stream->trash = $parsedBody['trash'];
+				try {				
+					$stream->save();
+				} catch(\Exception $e) {
+					echo $e->getmessage();
+				}
+			}
 		}
 
 	}

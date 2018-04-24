@@ -167,146 +167,145 @@
 </template>
 
 <script>
+import NavBar from "./navBar.vue";
+import listeStream from "./listeStream.vue";
 
-import NavBar from './navBar.vue'
-import listeStream from './listeStream.vue'
+import uuidv4 from "uuid/v4";
 
 export default {
-  name: 'accueil',
-  components: {NavBar, listeStream},
+  name: "accueil",
+  components: { NavBar, listeStream },
 
-  data () {
+  data() {
     return {
-      streams: '',
+      streams: "",
       modalCo: false,
       modalIn: false,
       modalStart: false,
-      nom : '',
-      prenom : '',
-      email : '',
-      password : '',
-      pseudo: '',
-      nomStream : '',
-      descriptionStream : '',
-      urgence : false,
-      anonyme : false,
-      publique : true,
-      visiteur: true,
-    }
+      nom: "",
+      prenom: "",
+      email: "",
+      password: "",
+      pseudo: "",
+      nomStream: "",
+      descriptionStream: "",
+      urgence: false,
+      anonyme: false,
+      publique: true,
+      visiteur: true
+    };
   },
   mounted() {
-
     //Verif visiteur
-		if(this.$store.state.token == 'visiteur')
-			this.visiteur = false;
+    if (this.$store.state.token == "visiteur") this.visiteur = false;
 
-    if(!this.$store.state.member) {
+    if (!this.$store.state.member) {
       this.modalCo = true;
     }
-    window.bus.$on('logout',() => {
-      this.$router.push({path: '/'});
-      this.$store.commit('setMember', false);
-      this.$store.commit('setToken', false);
-      this.$router.push({path: '/'});
+    window.bus.$on("logout", () => {
+      this.$router.push({ path: "/" });
+      this.$store.commit("setMember", false);
+      this.$store.commit("setToken", false);
+      this.$router.push({ path: "/" });
       this.modalCo = true;
-    })
-
-    window.axios.get('streams').then((response) => {
-      this.streams = response.data;
-    }).catch((error) => {
     });
 
+    window.axios
+      .get("streams")
+      .then(response => {
+        this.streams = response.data;
+      })
+      .catch(error => {});
   },
-  methods : {
+  methods: {
     seConnecter() {
-      window.axios.post('members/signin',{
+      window.axios
+        .post("members/signin", {
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          this.$store.commit("setMember", response.data.member);
+          this.$store.commit("setToken", response.data.token);
 
-        email : this.email,
-        password : this.password
+          //window.axios.defaults.params.token = response.data.token;
 
-      }).then((response) => {
-
-        this.$store.commit('setMember', response.data.member);
-        this.$store.commit('setToken', response.data.token);
-
-        //window.axios.defaults.params.token = response.data.token;
-
-        this.$router.push({path: '/'});
-        this.modalCo = false;
-
-      }).catch((error) => {
-        console.log(error);
-        alert(error);
-
-      });
-
+          this.$router.push({ path: "/" });
+          this.modalCo = false;
+        })
+        .catch(error => {
+          console.log(error);
+          alert(error);
+        });
     },
 
     creerMembre() {
-      window.axios.post('members',{
-
-        nom : this.nom,
-        prenom : this.prenom,
-        pseudo : this.pseudo,
-        email : this.email,
-        password : this.password,
-
-      }).then((response) => {
-
-        console.log(response.data);
-        alert('Le membre '+response.data.pseudo+' a été créé. Vous pouvez vous connecter');
-        this.$router.push({path: '/connexion'});
-        this.modalCo=true;
-        this.modalIn= false;
-
-      }).catch((error) => {
-        alert(error);
-      });
-
+      window.axios
+        .post("members", {
+          nom: this.nom,
+          prenom: this.prenom,
+          pseudo: this.pseudo,
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          console.log(response.data);
+          alert(
+            "Le membre " +
+              response.data.pseudo +
+              " a été créé. Vous pouvez vous connecter"
+          );
+          this.$router.push({ path: "/connexion" });
+          this.modalCo = true;
+          this.modalIn = false;
+        })
+        .catch(error => {
+          alert(error);
+        });
     },
 
     openStream() {
-      if(this.visiteur === false) alert('Vous ne pouvez pas démarrer un stream en tant que visiteur');
-      else this.modalStart=true;
+      if (this.visiteur === false)
+        alert("Vous ne pouvez pas démarrer un stream en tant que visiteur");
+      else this.modalStart = true;
     },
 
     demarrerStream() {
-
-      window.axios.post('createStream',{
-
-        nomStream : this.nomStream,
-        descriptionStream : this.descriptionStream,
-        urgence : this.urgence,
-        anonyme : this.anonyme,
-        publique : this.publique,
-        id_user : this.$store.state.member.id
-
-      }).then((response) => {
-
-        this.$router.push({path: '/emission'});
-        this.modalStart=false;
-
-      }).catch((error) => {
-        alert(error);
-      });
-
+      this.uuid = uuidv4();
+      window.axios
+        .post("createStream", {
+          nomStream: this.nomStream,
+          descriptionStream: this.descriptionStream,
+          urgence: this.urgence,
+          anonyme: this.anonyme,
+          publique: this.publique,
+          id_user: this.$store.state.member.id,
+          stream_room_uuid: this.uuid
+        })
+        .then(response => {
+          this.$store.commit("setidStream", response.data.id);
+          this.$store.commit("setUuidStream", this.uuid);
+          this.$router.push({ path: "/emission" });
+          this.modalStart = false;
+        })
+        .catch(error => {
+          alert(error);
+        });
     },
 
     modeVisiteur() {
-      this.$store.commit('setMember', 'Visiteur' );
-      this.$store.commit('setToken', 'visiteur');
-      this.$router.push({path: '/'});
+      this.$store.commit("setMember", "Visiteur");
+      this.$store.commit("setToken", "visiteur");
+      this.$router.push({ path: "/" });
       this.modalCo = false;
     }
-
   }
-}
+};
 </script>
 
 <style scoped>
-
 body {
-  background-color: #F2F6FA;
+  background-color: #f2f6fa;
   margin: 0px;
   padding: 0px;
   outline: 0px;
@@ -315,7 +314,7 @@ body {
   position: absolute;
 }
 
-.button{
+.button {
   margin: 10px;
   -webkit-transition-property: color;
   -webkit-transition-duration: 0.5s;
@@ -325,45 +324,45 @@ body {
   transition-duration: 0.5s;
 }
 
-.button:hover{
+.button:hover {
   color: #363636;
 }
 
-.columns{
+.columns {
   border-radius: 5px;
   margin-top: 20px;
 }
 
-.titre{
-  background-color: #DBDBDB;
+.titre {
+  background-color: #dbdbdb;
 }
 
-.first{
+.first {
   border-radius: 5px 0px 0px 5px;
 }
 
-.last{
+.last {
   border-radius: 0px 5px 5px 0px;
 }
 
-.data{
+.data {
   border-bottom: 1px solid black;
 }
 
-.marker{
+.marker {
   margin-right: 10px;
 }
 
-.marker-warning{
+.marker-warning {
   margin-right: 10px;
   margin-left: 10px;
 }
 
-.border{
+.border {
   border-top: 3px solid #363636;
 }
 
-.end{
+.end {
   border-bottom: 1px solid black;
 }
 
@@ -376,7 +375,7 @@ body {
   position: absolute;
 }
 
-.btnPLus{
+.btnPLus {
   top: 33%;
   margin-left: 33%;
 }

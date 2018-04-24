@@ -131,4 +131,11 @@ $app->post('/createStream[/]', function (Request $req, Response $resp, $args) {
     }
 );
 
+//Stop stream
+$app->put('/stopStream[/]', function (Request $req, Response $resp, $args) {
+    $c = new boniflux\api\control\Controller($this);
+    return $c->stopStream($req, $resp, $args);
+    }
+);
+
 $app->run();

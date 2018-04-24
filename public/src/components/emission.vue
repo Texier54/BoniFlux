@@ -4,9 +4,10 @@
 		<section class="container">
 		<div class="columns">
 			<div class="column is-8">
-        <!-- <button  class="btn btn-primary">Démarrer la vidéo</button> -->
-        <a class="btn button is-link" id="start">Démarer</a>
-        <video id="emitter-video" ref="video" width="100%" height="400px" controls></video>
+        <a class="btn button is-link" id="open" @click="open" v-if="!stop">Démarer</a>
+        <router-link class="btn button is-link" to="record" target="_blank" v-if="!stop">Record</router-link>
+        <a class="btn button is-danger" id="stop" @click="stopStream">Stopper</a>
+        <div id="emission"></div>
 				<div>
 					<button class="btn button is-success" id="snap" v-on:click="capture()">Snap Photo</button>
 				</div>
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-let socket = io("localhost:3000");
+//let socket = io("localhost:3000");
 let p = null;
 
 import NavBar from "./navBar.vue";
@@ -41,115 +42,24 @@ export default {
   components: { NavBar },
   data() {
     return {
-      video: {},
       canvas: {},
       captures: [],
       intervalProgress: "",
       messages: "",
       editMessage: "",
       visiteur: false,
-      stream: ""
+      stop: false
     };
   },
 
   mounted() {
-    this.video = this.$refs.video;
-    // if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    //   navigator.mediaDevices
-    //     .getUserMedia({ video: true, audio: false })
-    //     .then(stream => {
-    //       this.video.src = window.URL.createObjectURL(stream);
-    //       this.video.play();
-    //     });
-    // }
-    // let app = document.createElement("script", {
-    //   attrs: { src: require("../assets/app.js") }
-    // });
-    // document.head.appendChild(app);
+    this.connection = new RTCMultiConnection();
+    this.connection.socketURL = "https://rtcmulticonnection.herokuapp.com:443/";
 
-    let simplePeer = document.createElement("script", {
-      attrs: { src: require("../assets/simplePeer.js") }
-    });
-    document.head.appendChild(simplePeer);
-
-    document.querySelector("#start").addEventListener("click", e => {
-      navigator.mediaDevices
-        .getUserMedia({
-          audio: true,
-          video: true
-        })
-        .then(stream => {
-          p = new SimplePeer({
-            initiator: true,
-            stream: stream,
-            config: {
-              iceServers: [
-                {
-                  urls: ["stun:stun.l.google.com:19302"]
-                },
-                // {
-                //   url: "stun:stun2.l.google.com:19302"
-                // },
-                // {
-                //   url: "stun:stun3.l.google.com:19302"
-                // },
-                // {
-                //   url: "turn:192.158.29.39:3478?transport=udp",
-                //   credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
-                //   username: "28224511:1379330808"
-                // },
-                {
-                  urls: ["turn:numb.viagenie.ca"],
-                  credential: "muazkh",
-                  username: "webrtc@live.com"
-                }
-              ]
-            },
-            trickle: false
-          });
-
-          this.bindEvents(p);
-
-          this.video.volume = 0;
-          this.video.srcObject = stream;
-          this.video.play();
-        });
-    });
-
-    socket.on("answerForInitiator", answer => {
-      if (p == null) {
-        p = new SimplePeer({
-          initiator: false,
-          trickle: false,
-          config: {
-            iceServers: [
-              {
-                urls: ["stun:stun.l.google.com:19302"]
-              },
-              // {
-              //   url: "stun:stun2.l.google.com:19302"
-              // },
-              // {
-              //   url: "stun:stun3.l.google.com:19302"
-              // },
-              // {
-              //   url: "turn:192.158.29.39:3478?transport=udp",
-              //   credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
-              //   username: "28224511:1379330808"
-              // },
-              {
-                urls: ["turn:numb.viagenie.ca"],
-                credential: "muazkh",
-                username: "webrtc@live.com"
-              }
-            ]
-          }
-        });
-        this.bindEvents(p);
-      }
-
-      p.signal(JSON.parse(answer));
-    });
+    this.connection.onstream = function(event) {
+      document.querySelector("#emission").appendChild(event.mediaElement);
+      console.clear();
+    };
   },
 
   methods: {
@@ -160,31 +70,48 @@ export default {
         .drawImage(this.video, 0, 0, 640, 480);
       this.captures.push(canvas.toDataURL("image/png"));
     },
-
-    // demarrer() {
-    //   window.setInterval(() => {
-    //     this.$refs.canvas.style.display = "none";
-    //     this.stream = this.$refs.canvas;
-    //     this.stream.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
-    //     socket.emit("stream", this.stream.toDataURL());
-    //   }, 46);
-    // },
     saveMess() {
       alert("Not Working");
     },
-    bindEvents(p) {
-      p.on("error", err => {
-        console.log("Error", err);
+    open() {
+      this.connection.session = {
+        audio: true,
+        video: true,
+        data: true
+      };
+
+      this.connection.mediaConstraints = {
+        audio: true,
+        video: true
+      };
+
+      this.connection.sdpConstraints.mandatory = {
+        OfferToReceiveAudio: false,
+        OfferToReceiveVideo: false
+      };
+
+      this.connection.open(this.$store.state.uuidStream);
+      console.clear();
+    },
+    stopStream() {
+      this.connection.attachStreams.forEach(function(localStream) {
+        localStream.stop();
       });
 
-      p.on("signal", data => {
-        //document.querySelector("#offer").textContent = JSON.stringify(data);
-        socket.emit("offerInitiator", JSON.stringify(data));
-      });
+      this.connection.close();
 
-      p.on("stream", stream => {
-        console.log("Nice");
-      });
+      this.stop = true;
+
+      window.axios
+        .put("stopStream", {
+          trash: 1,
+          uuid: this.$store.state.uuidStream
+        })
+        .then(res => {
+          console.log(res.data);
+          this.$route.push("accueil");
+        })
+        .catch(err => {});
     }
   }
 };
