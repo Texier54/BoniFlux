@@ -57,7 +57,7 @@ export default {
   mounted() {
     setInterval(()=>{
       this.numberOfUsers = this.connection.getAllParticipants().length;
-    },1000)
+    },2000)
     this.connection = new RTCMultiConnection();
     this.connection.socketURL = "https://rtcmulticonnection.herokuapp.com:443/";
 
