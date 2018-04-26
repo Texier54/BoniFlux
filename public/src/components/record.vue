@@ -40,7 +40,7 @@ export default {
       theStream: '',
       theRecorder: '',
       recordedChunks: [],
-      constraints : { "video": { width: { max: 320 } }, "audio" : true },
+      constraints : { "video": true, "audio" : true },
       clipName: '',
       ifstart: false,
       file: '',
@@ -61,6 +61,7 @@ export default {
             this.theStream = stream;
             let video = document.querySelector('video');
             video.src = URL.createObjectURL(stream);
+            video.volume = 0;
             try {
               var recorder = new MediaRecorder(stream, {mimeType : "video/webm"});
             } catch (e) {

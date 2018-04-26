@@ -7,7 +7,7 @@
                 <div class="column is-4" v-for="v in videos" :key="v.id">
                   <video :src="v.filename" controls></video>
                   <div>
-                      <router-link :to="{ name: 'profil', params: { id: v.id_user }}">User</router-link>
+                      <router-link :to="{ name: 'profil', params: { id: v.id_user }}">{{v.pseudo}}</router-link>
                       <h1>{{v.nom}}</h1>
                       <p>{{v.description}}</p>
                   </div>
@@ -37,11 +37,11 @@ export default {
         this.videos.forEach(video => {
           video.filename =
             "http://localhost/Boniflux/uploads/" + video.filename;
-          // window.axios.get('user/'+video.id_user).then((res) => {
-          //     video.profil = res.data
-          // }).catch((e) => {
-          //     console.error(e)
-          // })
+          window.axios.get('user/'+video.id_user).then((res) => {
+              video.pseudo = res.data.pseudo
+          }).catch((e) => {
+              console.error(e)
+          })
         });
       })
       .catch(error => {});

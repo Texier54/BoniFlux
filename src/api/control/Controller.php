@@ -275,7 +275,7 @@
 				$video = new \boniflux\common\models\Video();
 
 				$uploadedFile = $uploadedFiles['video'];
-				if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+				if ($uploadedFile->getError() == UPLOAD_ERR_OK) {
 					$filename = $this->moveUploadedFile($directory, $uploadedFile, $parsedBody['title']);
 
 					$video->nom = $parsedBody['title'];
@@ -285,8 +285,8 @@
 					$video->id_user = $parsedBody['id_user'];
 					$video->save();
 
-					$tab=['nom' => $parsedBody['title'],'description' => $parsedBody['description'],'filename' => $filename,];
-					$resp->getBody()->write(json_encode($tab));
+					//$tab=['nom' => $parsedBody['title'],'description' => $parsedBody['description'],'filename' => $filename,];
+					$resp->getBody()->write(json_encode($video));
 					return $resp;
 				}
 			}catch(\Exception $e){
