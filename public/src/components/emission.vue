@@ -24,8 +24,8 @@
 				<div class="listemessage" id="messages">
 					<message v-for="message in messages" :message="message" :key="message.id"></message>
 				</div>
-				<input v-if="visiteur" @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
-				<input v-else class="input" placeholder="Vous ne pouvez pas envoyer de message sur votre stream" disabled>
+				<input @keyup.enter="saveMess" class="input" placeholder="Message" v-model="editMessage">
+				<!-- <input v-else class="input" placeholder="Vous ne pouvez pas envoyer de message sur votre stream" disabled> -->
       </div>
 		</div>
 		</section>
@@ -37,10 +37,11 @@
 let p = null;
 
 import NavBar from "./navBar.vue";
+import message from "./message.vue";
 
 export default {
   name: "emission",
-  components: { NavBar },
+  components: { NavBar, message },
   data() {
     return {
       canvas: {},
@@ -65,6 +66,14 @@ export default {
       document.querySelector("#emission").appendChild(event.mediaElement);
       console.clear();
     };
+    setInterval(()=>{
+      window.axios
+      .get("messages/" + this.$store.state.idStream)
+      .then(response => {
+        this.messages = response.data.reverse();
+      })
+      .catch(error => {});
+    },2000)
   },
 
   methods: {
@@ -76,7 +85,18 @@ export default {
       this.captures.push(canvas.toDataURL("image/png"));
     },
     saveMess() {
-      alert("Not Working");
+      window.axios
+        .post("messages/" + this.$store.state.idStream, {
+          message: this.editMessage,
+          id_stream: this.$store.state.idStream,
+          id_user: this.$store.state.member.id
+        })
+        .then(response => {
+          this.editMessage = "";
+        })
+        .catch(error => {
+          alert(error);
+        });
     },
     open() {
       this.connection.session = {

@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       map: "",
-      messages: "",
+      messages: [],
       editMessage: "",
       stream: "",
       abonnements: "",
@@ -85,18 +85,6 @@ export default {
         })
         .then(response => {
           this.editMessage = "";
-          window.axios
-            .get("messages/" + this.$route.params.id)
-            .then(response => {
-              this.messages = response.data;
-              // window.setInterval(function() {
-              //   var elem = document.getElementById("messages");
-              //   elem.scrollTop = elem.scrollHeight;
-              // }, 100);
-            })
-            .catch(error => {
-              alert(error);
-            });
         })
         .catch(error => {
           alert(error);
@@ -168,17 +156,14 @@ export default {
         };
       })
       .catch(error => {});
-
-    window.axios
+    setInterval(()=>{
+      window.axios
       .get("messages/" + this.$route.params.id)
       .then(response => {
-        this.messages = response.data;
-        // window.setInterval(function() {
-        //   var elem = document.getElementById("messages");
-        //   elem.scrollTop = elem.scrollHeight;
-        // }, 500);
+        this.messages = response.data.reverse();
       })
       .catch(error => {});
+    },2000)
   }
 };
 </script>

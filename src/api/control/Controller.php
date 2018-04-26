@@ -147,7 +147,7 @@
 		public function getmessage($req, $resp, $args) {
 
 			$messages = new \boniflux\common\models\Message();
-			$messages = $messages->where('id_stream', '=', $args['id'])->limit(30)->get();
+			$messages = $messages->where('id_stream', '=', $args['id'])->limit(15)->orderBy('updated_at', 'desc')->get();
 
 			$resp= $resp->withHeader( 'Content-type', "application/json;charset=utf-8");
 
@@ -178,9 +178,9 @@
 
 			$resp= $resp->withStatus(201);
 
-			$tab = $messages;
+			//$tab = $message;
 
-			$resp->getBody()->write(json_encode($tab));
+			$resp->getBody()->write(json_encode($message));
 			return $resp;
 		}
 
