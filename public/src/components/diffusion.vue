@@ -106,7 +106,7 @@ export default {
   mounted() {
     setInterval(()=>{
       this.numberOfUsers = this.connection.getAllParticipants().length;
-    },1000)
+    },2000)
     //Verif visiteur
     if (this.$store.state.token == "visiteur") this.visiteur = false;
     else {
