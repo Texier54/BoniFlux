@@ -8,6 +8,7 @@
         <router-link class="btn button is-link" to="record" target="_blank" v-if="!stop">Record</router-link>
         <a class="btn button is-danger" id="stop" @click="stopStream">Stopper</a>
         <div id="emission"></div>
+        <p><i class="fas fa-user"></i> {{numberOfUsers}}</p>
 				<div>
 					<button class="btn button is-success" id="snap" v-on:click="capture()">Snap Photo</button>
 				</div>
@@ -48,11 +49,15 @@ export default {
       messages: "",
       editMessage: "",
       visiteur: false,
-      stop: false
+      stop: false,
+      numberOfUsers: 0
     };
   },
 
   mounted() {
+    setInterval(()=>{
+      this.numberOfUsers = this.connection.getAllParticipants().length;
+    },1000)
     this.connection = new RTCMultiConnection();
     this.connection.socketURL = "https://rtcmulticonnection.herokuapp.com:443/";
 

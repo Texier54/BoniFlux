@@ -40,11 +40,6 @@ CREATE TABLE `abonnement` (
 --
 -- Déchargement des données de la table `abonnement`
 --
-
-INSERT INTO `abonnement` (`id`, `id_streamer`, `id_abonne`) VALUES
-(1, 2, 1),
-(2, 3, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -63,13 +58,6 @@ CREATE TABLE `message` (
 --
 -- Déchargement des données de la table `message`
 --
-
-INSERT INTO `message` (`id`, `texte`, `created_at`, `updated_at`, `id_stream`, `id_user`) VALUES
-(1, 'Salut toi !', NULL, NULL, 1, 1),
-(2, 'dfb zef  zefzef ze fze f', NULL, NULL, 1, 1),
-(3, 'qzf qzd q zdqzd qz d', NULL, NULL, 2, 1),
-(4, 'qzf', '2018-03-04 15:52:34', '2018-03-04 15:52:34', 1, 1),
-(5, 'hey', '2018-03-04 15:52:37', '2018-03-04 15:52:37', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -90,16 +78,14 @@ CREATE TABLE `stream` (
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `id_user` int(11) DEFAULT NULL,
-  `id_urgence` int(11) DEFAULT NULL
+  `id_urgence` int(11) DEFAULT NULL,
+  `stream_room_uuid` text,
+  `trash` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `stream`
 --
-
-INSERT INTO `stream` (`id`, `nom`, `description`, `etat`, `latitude`, `longitude`, `created_at`, `updated_at`, `deleted_at`, `id_user`, `id_urgence`) VALUES
-(1, 'Le jeu', 'qzqfzx zd ef ef e dee ', 1, 48.5, 6, NULL, NULL, NULL, 1, NULL),
-(2, 'Le Stream', 'qz q lorem ipsd ud biuzbh qizbd iuz qlzh ouzhd ', 1, 48, 6, NULL, NULL, NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -137,12 +123,6 @@ CREATE TABLE `user` (
 --
 -- Déchargement des données de la table `user`
 --
-
-INSERT INTO `user` (`id`, `nom`, `prenom`, `pseudo`, `email`, `password`, `created_at`, `updated_at`, `deleted`) VALUES
-(1, 'test', 'test', 'test', 'test', '$2y$10$RauIFfY5p.E997L2m1vv6eFr4YC9xF6p6vtdDb8Vc09IKCuc2oFXW', NULL, NULL, NULL),
-(2, 'Google', 'Google', 'Google', 'test@google.com', '$2y$10$RauIFfY5p.E997L2m1vv6eFr4YC9xF6p6vtdDb8Vc09IKCuc2oFXW', NULL, NULL, NULL),
-(3, 'ty', 'ty', 'yt', 'yt@google.fr', '$2y$10$RauIFfY5p.E997L2m1vv6eFr4YC9xF6p6vtdDb8Vc09IKCuc2oFXW', NULL, NULL, NULL),
-(4, 'fresh', 'fresh', 'fresh', 'fresh@test.fr', '$2y$10$RauIFfY5p.E997L2m1vv6eFr4YC9xF6p6vtdDb8Vc09IKCuc2oFXW', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 

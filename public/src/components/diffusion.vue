@@ -6,6 +6,7 @@
         <div class="mainvideo column is-8">
           <h2 class="is-size-1">{{ stream.nom }}</h2>
           <div id="stream"></div>
+          <p><i class="fas fa-user"></i> {{numberOfUsers}}</p>
         </div>
         <div class="column is-4">
             <h2>Chat</h2>
@@ -51,7 +52,8 @@ export default {
       ifabo: true,
       visiteur: true,
       imagestream: "",
-      video: ""
+      video: "",
+      numberOfUsers: 0
     };
   },
 
@@ -102,6 +104,9 @@ export default {
     }
   },
   mounted() {
+    setInterval(()=>{
+      this.numberOfUsers = this.connection.getAllParticipants().length;
+    },1000)
     //Verif visiteur
     if (this.$store.state.token == "visiteur") this.visiteur = false;
     else {
